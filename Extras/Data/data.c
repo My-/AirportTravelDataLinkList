@@ -25,6 +25,7 @@ struct data_type Data = {
 
 // data constructor
 struct data * data_of(int id, char *name, char *surname, int yearBorn, char *email){
+    printf("Creating data... ");
     struct data * this = (struct data*)malloc(sizeof(struct data));
     this->id = id;
     this->name = name;
