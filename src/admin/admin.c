@@ -1,3 +1,8 @@
+/**
+*   @by Mindaugas Sarskus
+*   @date 28/03/2018
+*/
+
 #include "admin.h"
 #include <stdio.h>
 

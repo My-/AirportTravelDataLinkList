@@ -1,30 +1,22 @@
+
 #include "admin_test.h"
 
-bool adminLogin_test(bool show){
-    bool R = true, b;
-    char v1[10], v2[10];
 
-    strcpy(v1, "aaa"); strcpy(v2, "111");
-    b = adminLoginValidate(v1, v2);
-    if( show ){ printf( "adminLoginValidate(%s, %s) - %s\n", v1, v2, (b ? PASS : FAILL) ); }
-    R &= b;
+void admin_login_test(){
+    Test.assertTrue( adminLoginValidate("aaa", "111"), "adminLoginValidate(\"aaa\", \"111\")" );
+    Test.assertTrue( adminLoginValidate("bbb", "222"), "adminLoginValidate(\"bbb\", \"222\")" );
+    Test.assertTrue( adminLoginValidate("ccc", "333"), "adminLoginValidate(\"ccc\", \"333\")" );
 
-    strcpy(v1, "aaa"); strcpy(v2, "222");
-    b = adminLoginValidate(v1, v2);
-    if( show ){ printf( "adminLoginValidate(%s, %s) - %s\n", v1, v2, (b ? PASS : FAILL) ); }
-    R &= b;
-
-    printf("%s%s%s\n\n", YELLOW_TEXT "adminLogin_test()" COLOR_RESET, " - ", (R ? PASS : FAILL));
-    return R;
+    Test.assertFalse( adminLoginValidate("cca", "333"), "adminLoginValidate(\"cca\", \"333\")" );
+    Test.assertFalse( adminLoginValidate("aaa", "11"), "adminLoginValidate(\"aaa\", \"11\")" );
+    Test.assertFalse( adminLoginValidate("bbb", "333"), "adminLoginValidate(\"bbb\", \"333\")" );
+    Test.assertFalse( adminLoginValidate("bbb", "2222"), "adminLoginValidate(\"bbb\", \"2222\")" );
 }
 
-bool runAll_adminTest(bool show){
-    bool R = true, b;
-
-    b = adminLogin_test(show);
-    if( show ){ printf("adminLogin_test() - %s\n", (b ? PASS : FAILL) ); }
-    R &= b;
-
-    printf("%s%s%s\n\n", YELLOW_TEXT "runAll_adminTest()" COLOR_RESET, " - ", (R ? PASS : FAILL));
-    return R;
+void admin_runAll(){
+    admin_login_test();
 }
+
+// int main(){
+//     admin_runAll();
+// }

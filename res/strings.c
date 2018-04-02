@@ -8,7 +8,6 @@ void main(){
 	char string2[40];
 	int number;
 	int length;
-	int compare;
 	int i;
 	char Months[12][20] = { "Jan","Feb","Mar","Apr","May","June","July","Aug","Sept","Oct","Nov","Dec" };
 
@@ -28,8 +27,7 @@ void main(){
 	printf("The length of string1 is: %d\n", length);
 	printf("The length of string2 is: %d\n", strlen(string2));
 
-	compare = strcmp(string1, string2); // String compare
-
+	int compare = strcmp(string1, string2); // String compare
 	if (compare == 0){ printf("The strings are equal\n"); }
 	else if (compare > 0){ printf("String 1 is bigger\n"); }
 	else{ printf("String2 is bigger\n"); }

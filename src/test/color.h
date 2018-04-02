@@ -14,7 +14,4 @@
 #define CYAN_TEXT    "\033[36;1m"
 #define WHITE_TEXT   "\033[37;1m"
 
-#define FAILL (RED_TEXT "FAILL" COLOR_RESET)
-#define PASS (GREEN_TEXT "PASS" COLOR_RESET)
-
 #endif
