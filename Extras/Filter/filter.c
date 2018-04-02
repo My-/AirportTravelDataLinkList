@@ -3,6 +3,8 @@
 #include "filter.h"
 #include "../Data/data.c" // need it to suport Data "class"
 
+
+
 // Filter "class"
 struct filter Filter = {
     .travelFrom = filter_travelFrom,
@@ -20,7 +22,7 @@ bool filterAUSTRALIA(struct data *data){ return data->country == AUSTRALIA; }
 bool filterFalse(struct data *data){ return false; }
 
 // Country filter factory.
-bool (*filter_travelFrom(Countries country))(struct data*){
+bool (*filter_travelFrom(int country))(struct data*){
     bool (*filter)(struct data *data);
     switch (country) {
         case UK: filter = filterUK; break;
@@ -41,7 +43,7 @@ bool filterBUSINESS(struct data *data){ return data->travelClass == BUSINESS; }
 bool filterFIRST(struct data *data){ return data->travelClass == FIRST; }
 
 // Travel class filter factory
-bool (*filter_travelClass(TravelClass tclass))(struct data*){
+bool (*filter_travelClass(int tclass))(struct data*){
     bool (*filter)(struct data *data);
     switch (tclass) {
         case ECONOMY: filter = filterECONOMY; break;
@@ -60,7 +62,7 @@ bool filterLESS_5_TIMES(struct data *data){ return data->travelFrequency == LESS
 bool filterMORE_5_TIMES(struct data *data){ return data->travelFrequency == MORE_5_TIMES; }
 
 // Travel frequency filter factory
-bool (*filter_travelFrequency(TravelFrequency frequancy))(struct data*){
+bool (*filter_travelFrequency(int frequancy))(struct data*){
     bool (*filter)(struct data *data);
     switch (frequancy){
         case LESS_3_TIMES: filter = filterLESS_3_TIMES; break;
@@ -79,7 +81,7 @@ bool filterLESS_7_DAYS(struct data *data){ return data->stayDuration == LESS_7_D
 bool filterMORE_7_DAYS(struct data *data){ return data->stayDuration == MORE_7_DAYS; }
 
 // Stay duration filter factory
-bool (*filter_stayDuration(StayDuration duration))(struct data*){
+bool (*filter_stayDuration(int duration))(struct data*){
     bool (*filter)(struct data *data);
     switch (duration){
         case ONE_DAY: filter = filterONE_DAY; break;
@@ -89,4 +91,12 @@ bool (*filter_stayDuration(StayDuration duration))(struct data*){
         default: filter = filterFalse;  // if not from list return false
     }
     return filter;
+}
+
+/**
+*   Function takes ( data, FilterFunction, filtering parameter )
+*   returns true if match;
+*/
+bool takeFilter( struct data * data, bool(*filter(int ))(struct data*), int value ){
+    return filter(value)(data);
 }
