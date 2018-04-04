@@ -38,9 +38,9 @@ void node_remove( struct node *this ){
 
 void node_insertBefore( struct node *this, struct data *data ){
     struct node * newNode = Node.of(data);
-    if( this->PREV != NULL ){
+    if( this->PREV ){
         newNode->PREV = this->PREV;
-        this->PREV->NEXT = newNode;
+        if( this->PREV ){ this->PREV->NEXT = newNode; }        
     }
     this->PREV = newNode;
     newNode->NEXT = this;
@@ -48,9 +48,9 @@ void node_insertBefore( struct node *this, struct data *data ){
 
 void node_insertAfter( struct node *this, struct data *data ){
     struct node * newNode = Node.of(data);
-    if( this->NEXT != NULL ){
+    if( this->NEXT ){
         newNode->NEXT = this->NEXT;
-        this->PREV->NEXT = newNode;
+        if( this->PREV ){ this->PREV->NEXT = newNode; }
     }
     this->NEXT = newNode;
     newNode->PREV = this;

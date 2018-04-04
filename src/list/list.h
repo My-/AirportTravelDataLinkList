@@ -3,8 +3,8 @@
 #ifndef LINK_LIST
 #define LINK_LIST
 
-#include "../Data/data.h"
-#include "../Node/node.h"
+#include "../data/data.h"
+#include "../node/node.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>    // boolean
@@ -31,7 +31,7 @@ bool list_insertBefore( struct list *this, struct data *data );
 bool list_insertAfter( struct list *this, struct data *data );
 int list_size(struct list * this);
 
-struct list_type {
+extern struct list_type {
     struct list * (*empty)();
     struct list * (*of)( struct data *data );
     struct data * (*get)(struct list *this );

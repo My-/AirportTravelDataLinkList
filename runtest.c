@@ -3,6 +3,7 @@
 #include "./test/data_test.h"
 #include "./test/filter_test.h"
 #include "./test/node_test.h"
+#include "./test/list_test.h"
 
 int main() {
 
@@ -10,6 +11,7 @@ int main() {
     data_runAll();
     filter_runAll();
     node_runAll();
+    list_runAll();
 
     return 0;
 }

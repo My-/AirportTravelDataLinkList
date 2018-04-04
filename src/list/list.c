@@ -1,6 +1,6 @@
 
-#include "../Node/node.c"
-#include "../Data/data.c"
+#include "list.h"
+// #include "../Data/data.c"
 
 // List "class"
 struct list_type List = {
@@ -64,6 +64,7 @@ struct data * list_prev(struct list *this ){
 bool list_addEnd( struct list *this, struct data *data ){
     if( this->FIRST_NODE != NULL ){         // not empty list
         Node.insertAfter(this->LAST_NODE, data);
+        this->LAST_NODE = this->LAST_NODE->NEXT;
         this->size++;
     }
     else{ list_addFront(this, data); }      // empty list
@@ -84,11 +85,21 @@ bool list_addFront( struct list *this, struct data *data ){
 }
 
 bool list_insertBefore( struct list *this, struct data *data ){
-    Node.insertBefore(this->CURRENT_NODE, data);
+    if( this->FIRST_NODE == this->CURRENT_NODE ){
+        list_addFront(this, data);
+    }else{
+        Node.insertBefore(this->CURRENT_NODE, data);
+        this->size++;
+    }
 }
 
 bool list_insertAfter( struct list *this, struct data *data ){
-    Node.insertAfter(this->CURRENT_NODE, data);
+    if( this->LAST_NODE == this->CURRENT_NODE ){
+        list_addEnd(this, data);
+    }else{
+        Node.insertAfter(this->CURRENT_NODE, data);        
+        this->size++;
+    }
 }
 
 // gets number of nodes in list

@@ -13,8 +13,6 @@ void node_of_test(){
     head->NEXT = Node.of(bob);
     Test.assertTrue(head->NEXT, "head->NEXT");
     Test.assertEqual_String("Bob", head->NEXT->data->name, "head->NEXT->data->name");
-
-
 }
 
 void node_has_test(){

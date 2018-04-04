@@ -8,6 +8,13 @@
 
 #include "../src/test/test.h"
 #include "../src/data/data.h"
-#include "../src/node/node.h"
+#include "../src/list/list.h"
+
+void list_create_test();
+void list_get_test();
+void list_add_test();
+void list_insert_test();
+
+void list_runAll();
 
 #endif
