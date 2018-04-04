@@ -14,6 +14,7 @@ void admin_login_test(){
 }
 
 void admin_runAll(){
+    Test.display("Admin Test", BLUE_TEXT);
     admin_login_test();
 }
 

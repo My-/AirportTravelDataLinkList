@@ -11,12 +11,16 @@
 
 
 struct test Test = {
+    .display = test_display,
     .assertTrue = test_assertTrue,
     .assertFalse = test_assertFalse,
     .assertEqual_String = test_assertEqual_String,
     .assertEqual_Int = test_assertEqual_Int
 };
 
+void test_display(char* text, char* color){
+    printf("%s%s\n" COLOR_RESET, color, text);
+}
 
 bool test_assertTrue(bool actual, char * message){
     printf("%s: %s - ", message, (YELLOW_TEXT "true" COLOR_RESET));

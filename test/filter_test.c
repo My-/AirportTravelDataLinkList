@@ -37,6 +37,7 @@ void filter_filters_test(){
 
 
 void filter_runAll(){
+    Test.display("Filter Test", BLUE_TEXT);
     filter_takeFilter_test();
     filter_filters_test();
 }

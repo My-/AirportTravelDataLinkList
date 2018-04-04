@@ -10,6 +10,7 @@
 #include "../src/data/data.h"
 
 void data_of_test();
+void data_delete_test();
 void data_runAll();
 
 

@@ -25,7 +25,7 @@ struct data_type Data = {
 
 // data constructor
 struct data * data_of(int id, char *name, char *surname, int yearBorn, char *email){
-    printf("Creating data... ");
+    // printf("Creating data... ");
     struct data * this = (struct data*)malloc(sizeof(struct data));
     this->id = id;
     this->name = name;
@@ -33,7 +33,7 @@ struct data * data_of(int id, char *name, char *surname, int yearBorn, char *ema
     this->yearBorn = yearBorn;
     this->email = email;
     Data.counter++;
-    printf("data{ id: %d, name: %s, email: %s}\n", this->id, this->name, this->email);
+    // printf("data{ id: %d, name: %s, email: %s}\n", this->id, this->name, this->email);
 
     return this;
 }
@@ -58,7 +58,7 @@ void data_setId( struct data *this, int id){
 }
 
 bool data_delete( struct data *this){
-    // free(&this->name);
+    // free(this->name);
     if( !this->name ){ printf("Deleted.\n"); }
     else{ printf("Not Deleted: %s\n", this->name); }
 

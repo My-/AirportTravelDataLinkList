@@ -2,7 +2,7 @@
 #ifndef NODE
 #define NODE
 
-#include "../Data/data.h"
+#include "../data/data.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>    // boolean

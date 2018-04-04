@@ -1,14 +1,14 @@
 #include "node.h"
-#include "../Data/data.c"
 
 // Node "class"
 struct node_type Node = {
     .of = node_of,
     .hasNext = node_hasNext,
+    .hasPrev = node_hasPrev,
     .remove = node_remove,
     .insertBefore = node_insertBefore,
     .insertAfter = node_insertAfter,
-    .get = node_getData,
+    .getData = node_getData,
     .totalNodes = 0
 };
 
@@ -25,7 +25,7 @@ bool node_hasNext( struct node *this ){
     return this->NEXT != NULL;
 }
 
-bool node_hasNext( struct node *this ){
+bool node_hasPrev( struct node *this ){
     return this->PREV != NULL;
 }
 
@@ -37,23 +37,21 @@ void node_remove( struct node *this ){
 }
 
 void node_insertBefore( struct node *this, struct data *data ){
-    struct node * newNode = malloc(sizeof(struct node));
-    newNode->data = data;
-
-    if( this->PREV != NULL ){ newNode->PREV = this->PREV; }
-    else{ newNode->PREV = NULL; }
-
+    struct node * newNode = Node.of(data);
+    if( this->PREV != NULL ){
+        newNode->PREV = this->PREV;
+        this->PREV->NEXT = newNode;
+    }
     this->PREV = newNode;
     newNode->NEXT = this;
 }
 
 void node_insertAfter( struct node *this, struct data *data ){
-    struct node * newNode = malloc(sizeof(struct node));
-    newNode->data = data;
-
-    if( this->NEXT != NULL ){ newNode->NEXT = this->NEXT; }
-    else{ newNode->NEXT = NULL; }
-
+    struct node * newNode = Node.of(data);
+    if( this->NEXT != NULL ){
+        newNode->NEXT = this->NEXT;
+        this->PREV->NEXT = newNode;
+    }
     this->NEXT = newNode;
     newNode->PREV = this;
 }
