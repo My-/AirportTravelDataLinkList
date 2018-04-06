@@ -64,12 +64,41 @@ void node_insert_test(){
 }
 
 void node_getData_test(){
+    Test.display("Node getData test", MAGENTA_TEXT);
     struct node *head = Node.of(
         Data.of(11, "Jhon", "Doe", 2000, "jhon@mail.com")
     );
 
-    Test.display("Node getData test", MAGENTA_TEXT);
     Test.assertEqual_Int( 11, Node.getData(head)->id, "Checking id");
+}
+
+void node_setData_test(){
+    Test.display("Node setData test", MAGENTA_TEXT);
+    struct node *head = Node.of(
+        Data.of(11, "Jhon", "Doe", 2000, "jhon@mail.com")
+    );
+
+    Test.assertEqual_Int( 11, Node.getData(head)->id, "Checking id");
+    Node.setData(head,
+        Data.of(33, "Jhon", "Doe", 2000, "jhon@mail.com")
+    );
+    Test.assertEqual_Int( 33, Node.getData(head)->id, "Checking id");
+
+}
+
+void node_indexOf_test(){
+    Test.display("Node indexOf test", MAGENTA_TEXT);
+    struct node *head = Node.of(
+        Data.of(11, "Jhon", "Doe", 2000, "jhon@mail.com")
+    );
+    Node.insertAfter(head, Data.of(11, "Aaran", "Doe", 2000, "jhon@mail.com") );
+    Node.insertBefore(head->NEXT, Data.of(11, "Baran", "Doe", 2000, "jhon@mail.com") );
+    Node.insertBefore(head, Data.of(11, "Canal", "Doe", 2000, "jhon@mail.com") );
+    // Canal -> Jhon -> Baran -> Aaran
+    Test.assertEqual_Int(0, Node.indexOf(head->PREV), "indexOf");
+    Test.assertEqual_Int(1, Node.indexOf(head), "indexOf");
+    Test.assertEqual_Int(2, Node.indexOf(head->NEXT), "indexOf");
+    Test.assertEqual_Int(3, Node.indexOf(head->NEXT->NEXT), "indexOf");
 }
 
 void node_runAll(){
@@ -79,4 +108,6 @@ void node_runAll(){
     node_remove_test();
     node_insert_test();
     node_getData_test();
+    node_setData_test();
+    node_indexOf_test();
 }

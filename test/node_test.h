@@ -15,6 +15,8 @@ void node_has_test();
 void node_remove_test();
 void node_insert_test();
 void node_getData_test();
+void node_setData_test();
+void node_indexOf_test();
 void node_runAll();
 
 #endif

@@ -14,6 +14,8 @@ void list_create_test();
 void list_get_test();
 void list_add_test();
 void list_insert_test();
+void list_getAtIndex_test();
+void list_sort_test();
 
 void list_runAll();
 
