@@ -17,6 +17,7 @@ struct list_type List = {
     .addFront = list_addFront,
     .insertBefore = list_insertBefore,
     .insertAfter = list_insertAfter,
+    .insert = list_insert,
     .sort = list_sort,
     .size = list_size,
     .showAll = list_showAll
@@ -38,7 +39,7 @@ void swapData(struct node *n1, struct node *n2){
 struct node *partition( struct list *list,
                         struct node *lo,
                         struct node *hi,
-                        int(*comparator)(struct node*, struct node*)){
+                        COMPARATOR){
 
     struct node *pivot = hi;
     struct node *start = lo;
@@ -59,7 +60,7 @@ struct node *partition( struct list *list,
 void quickSort( struct list *list,
                 struct node *lo,
                 struct node *hi,
-                int(*comparator)(struct node*, struct node*)){
+                COMPARATOR){
 
     if( !(lo && hi) ){ return; }
     if( Node.indexOf(lo) < Node.indexOf(hi) ){
@@ -191,7 +192,7 @@ bool list_insertBefore( struct list *this, struct data *data ){
     }
 }
 
-bool list_insertAfter( struct list *this, struct data *data ){
+bool list_insertAfter( struct list *this, struct data *data ){ // TODO: remove return type
     if( this->LAST_NODE == this->CURRENT_NODE ){
         list_addEnd(this, data);
     }else{
@@ -200,7 +201,24 @@ bool list_insertAfter( struct list *this, struct data *data ){
     }
 }
 
-void list_sort( struct list *this, int(*comparator)(struct node*, struct node*) ){
+bool list_insert( struct list *this, struct data *data, COMPARATOR ){
+    struct node *tmp = Node.of(data);
+    List.getFirst(this);        // resets CURRENT_NODE to first position
+    while( Node.hasNext(this->CURRENT_NODE) ){
+        if( comparator(tmp, this->CURRENT_NODE) < 0 ){
+            Node.insertBefore(this->CURRENT_NODE, data);
+            this->size++;
+            free(tmp);
+            return true;
+        }
+        List.getNext(this);     // move CURRENT_NODE to next position
+    }
+    List.addEnd(this, data);
+    free(tmp);
+    return false;
+}
+
+void list_sort( struct list *this, COMPARATOR ){
     quickSort(this, this->FIRST_NODE, this->LAST_NODE, comparator);
 }
 

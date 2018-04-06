@@ -10,6 +10,7 @@
 #include <stdbool.h>    // boolean
 // #include <string.h>     // string
 
+#define COMPARATOR int(*comparator)(struct node*, struct node*)
 
 int compareBornDate(struct node *n1, struct node *n2);
 int compareId(struct node* n1, struct node* n2);
@@ -37,7 +38,8 @@ bool list_addEnd( struct list *this, struct data *data );
 bool list_addFront( struct list *this, struct data *data );
 bool list_insertBefore( struct list *this, struct data *data );
 bool list_insertAfter( struct list *this, struct data *data );
-void list_sort( struct list *this, int(*compare)(struct node*, struct node*) );
+bool list_insert( struct list *this, struct data *data, COMPARATOR );
+void list_sort( struct list *this, COMPARATOR );
 int list_size( struct list *this );
 void list_showAll( struct list *this );
 
@@ -53,7 +55,8 @@ extern struct list_type {
     bool (*addFront)( struct list *this, struct data *data );
     bool (*insertBefore)( struct list *this, struct data *data );
     bool (*insertAfter)( struct list *this, struct data *data );
-    void (*sort)( struct list *this, int(*compare)(struct node*, struct node*) );
+    bool (*insert)( struct list *this, struct data *data, COMPARATOR );
+    void (*sort)( struct list *this, COMPARATOR );
     int (*size)(struct list * this);
     void (*showAll)( struct list *this );
 } List;

@@ -3,13 +3,13 @@
 
 /** Private class methods **/
 
-void updateIndexes(struct node *node){
-    if( node->PREV ){ node->index = node->PREV->index +1; }
-    while( Node.hasNext(node) ){
-        node = node->NEXT;
-        node->index = node->PREV->index +1;
-    }
-}
+// void updateIndexes(struct node *node){
+//     if( node->PREV ){ node->index = node->PREV->index +1; }
+//     while( Node.hasNext(node) ){
+//         node = node->NEXT;
+//         node->index = node->PREV->index +1;
+//     }
+// }
 
 // Node "class"
 struct node_type Node = {
@@ -33,7 +33,7 @@ struct node * node_of( struct data *data ){
     newNode->data = data;
     newNode->PREV = NULL;
     newNode->NEXT = NULL;
-    newNode->index = 0;
+    // newNode->index = 0;
 
     return newNode;
 }
@@ -61,7 +61,7 @@ void node_insertBefore( struct node *this, struct data *data ){
     }
     this->PREV = newNode;
     newNode->NEXT = this;
-    updateIndexes(newNode);
+    // updateIndexes(newNode);
 }
 
 void node_insertAfter( struct node *this, struct data *data ){
@@ -72,7 +72,7 @@ void node_insertAfter( struct node *this, struct data *data ){
     }
     this->NEXT = newNode;
     newNode->PREV = this;
-    updateIndexes(newNode);
+    // updateIndexes(newNode);
 }
 
 struct data * node_getData( struct node *this ){
@@ -85,5 +85,10 @@ struct node * node_setData( struct node *this, struct data *data ){
 }
 
 int node_indexOf(struct node *this){
-    return this->index;
+    int index = 0;
+    while( Node.hasPrev(this) ){
+        index++;
+        this = this->PREV;
+    }
+    return index;
 }

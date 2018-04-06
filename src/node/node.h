@@ -13,7 +13,7 @@ struct node {
     struct data * data;         // pointer to nodes data
     struct node * PREV;         // pointer to previous node
     struct node * NEXT;         // pointer to next node
-    int index;                  // index of node in list
+    // int index;                  // index of node in list
     struct node_type * _it;     // pointer to nodes type
 };
 
