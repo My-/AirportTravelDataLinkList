@@ -27,10 +27,23 @@ void data_delete_test(){
     Test.assertTrue(false, "TODO: Fix Data.delete()");
 }
 
+void data_email_test(){
+    Test.display("Email test", MAGENTA_TEXT);
+    struct data *data = Data.empty();
+
+    Test.assertTrue( Data.setEmail(data, "er@we.we"), "er@we.we" );
+    Test.assertTrue( Data.setEmail(data, "r@w.e"), "r@w.e" );
+    Test.assertFalse( Data.setEmail(data, "@we.we"), "@we.we" );
+    Test.assertFalse( Data.setEmail(data, "er@wewe"), "er@wewe" );
+    Test.assertFalse( Data.setEmail(data, "er@we."), "er@we." );
+    Test.assertFalse( Data.setEmail(data, "er@.we"), "er@.we" );
+}
+
 void data_runAll(){
     Test.display("Data Test", BLUE_TEXT);
     data_of_test();
     data_delete_test();
+    data_email_test();
 }
 
 // int main(int argc, char const *argv[]) {

@@ -1,29 +1,56 @@
 #include "data.h"
 
-/**
-*   It's like enum .toString() method.
-*       https://stackoverflow.com/a/2161797/5322506
-*/
-static char *country_toStr[] = { "United Kingdom", "Rest Europe", "Asia", "Americas", "Australia" };
-static char *travelClass_toStr[] = { "Economy class", "Premium class", "Business class", "First class" };
-static char *travelFrequency_toStr[] = { "less then 3 times", "less then 5 times", "more than 5 times" };
-static char *stayDuration_toStr[] = { "1 day", "3 and less days", "7 and less days", "more than 7 days" };
+
+
+bool isEmailValid( char *email ){
+    char * tail = strchr(email, '@');
+    if( !tail ){ return false; }
+    int tailLen = strlen(tail);
+    int userLen = strlen(email) -tailLen;
+    if( userLen < 1 ){ return false; }
+    if( tailLen < 4 ){ return false; } // min: "@a.a"
+
+    char * country = strchr(tail, '.');
+    if( !country ){ return false; }
+    int countryLen = strlen(country);
+    int provLen = tailLen -countryLen;
+    if( countryLen < 2 ){ return false; }
+    if( provLen < 2 ){ return false; }
+
+    return true;
+}
 
 /**
 *   It's like Data class.
 *   For more info and refrences check data.h.
 */
 struct data_type Data = {
+    .empty = data_empty,
     .of = data_of,
     .setTravelData = data_setTravelData,
-    .delete = data_delete,
-    .getEmail = data_getEmail,
+    .remove = data_remove,
     .setId = data_setId,
+    .setEmail = data_setEmail,
     .toString = data_toString,
     .compareBornDate = data_compareBornDate,
     .compareId = data_compareId,
     .counter = 0
 };
+
+// empty data constructor
+struct data * data_empty(){
+    // printf("Creating data... ");
+    struct data * this = (struct data*)malloc(sizeof(struct data));
+    this->id = 0;
+    this->name = "";
+    this->surname = "";
+    this->yearBorn = 0;
+    this->email = "";
+    Data.counter++;
+    // printf("data{ id: %d, name: %s, email: %s}\n", this->id, this->name, this->email);
+
+    return this;
+}
 
 // data constructor
 struct data * data_of(int id, char *name, char *surname, int yearBorn, char *email){
@@ -40,8 +67,8 @@ struct data * data_of(int id, char *name, char *surname, int yearBorn, char *ema
     return this;
 }
 
-void data_setTravelData(struct data *this, Countries country, TravelClass travelClass,
-                        TravelFrequency travelFrequency, StayDuration stayDuration){
+void data_setTravelData( struct data *this, Countries country, TravelClass travelClass,
+                        TravelFrequency travelFrequency, StayDuration stayDuration ){
     this->country = country;
     this->travelClass = travelClass;
     this->travelFrequency = travelFrequency;
@@ -49,24 +76,27 @@ void data_setTravelData(struct data *this, Countries country, TravelClass travel
     // printf("TravelData{ country: %s, travelClass: %d}\n", country_toStr[ this->country], this->travelClass);
 }
 
-char* data_getEmail( struct data *this){
-    printf("email is %s\n", this->email);
-    return this->email;
-}
-
-void data_setId( struct data *this, int id){
+bool data_setId( struct data *this, int id ){
     this->id = id;
-    printf("id set to: %d\n", this->id);
 }
 
-bool data_delete( struct data *this){
-    // free(this->name);
-    if( !this->name ){ printf("Deleted.\n"); }
-    else{ printf("Not Deleted: %s\n", this->name); }
+bool data_setEmail( struct data *this, char* email ){
+    if( isEmailValid(email) ){
+        this->email = email;
+        return true;
+    }
+    return false;
+}
 
-    free(this);
-    if( !this ){ printf("Deleted.\n"); }
-    else{ printf("Not Deleted: %s\n", this->name); }
+
+bool data_remove( struct data *this){
+    // free(this->name);
+    // if( !this->name ){ printf("Deleted.\n"); }
+    // else{ printf("Not Deleted: %s\n", this->name); }
+    //
+    // free(this);
+    // if( !this ){ printf("Deleted.\n"); }
+    // else{ printf("Not Deleted: %s\n", this->name); }
 
 }
 
