@@ -1,15 +1,6 @@
 #include "node.h"
 
 
-/** Private class methods **/
-
-// void updateIndexes(struct node *node){
-//     if( node->PREV ){ node->index = node->PREV->index +1; }
-//     while( Node.hasNext(node) ){
-//         node = node->NEXT;
-//         node->index = node->PREV->index +1;
-//     }
-// }
 
 // Node "class"
 struct node_type Node = {
@@ -22,8 +13,26 @@ struct node_type Node = {
     .getData = node_getData,
     .setData = node_setData,
     .indexOf = node_indexOf,
+    .swapData = node_swapData,
+    // .compareData = node_compareData,
     .totalNodes = 0
 };
+
+/** Private class methods **/
+
+void node_swapData(struct node *n1, struct node *n2){
+    struct data *tmp = Node.getData(n1);
+    Node.setData( n1, Node.getData(n2) );
+    Node.setData( n2, tmp );
+}
+//
+// int compareBornDate(struct node *n1, struct node *n2){
+//     return Node.getData(n1)->yearBorn -Node.getData(n2)->yearBorn;
+// }
+//
+// int compareId(struct node* n1, struct node* n2){
+//     return Node.getData(n1)->id -Node.getData(n2)->id;
+// }
 
 
 /** Public class methods **/
@@ -92,3 +101,7 @@ int node_indexOf(struct node *this){
     }
     return index;
 }
+
+// int (*node_compareData( struct node*, struct node*))(COMPARATOR_DATA){
+//     return
+// }

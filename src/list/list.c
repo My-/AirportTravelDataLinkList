@@ -28,55 +28,57 @@ struct list_type List = {
 
 /** Private class methods **/
 
-void swapData(struct node *n1, struct node *n2){
-    struct data *tmp = Node.getData(n1);
-    Node.setData( n1, Node.getData(n2) );
-    Node.setData( n2, tmp );
-}
+
 
 // https://en.wikipedia.org/wiki/Quicksort
 // https://www.tutorialspoint.com/data_structures_algorithms/quick_sort_algorithm.htm
 struct node *partition( struct list *list,
                         struct node *lo,
                         struct node *hi,
-                        COMPARATOR){
+                        DATA_COMPARATOR){
 
     struct node *pivot = hi;
     struct node *start = lo;
     struct node *end = hi->PREV;
 
     while( Node.indexOf(start) < Node.indexOf(end) ){
-        if( comparator(start, pivot) > 0 ){         // if start more then pivot
-            if( comparator(pivot, end) > 0 ){ swapData(start, end); }
+        if( compareData(Node.getData(start), Node.getData(pivot)) > 0 ){         // if start more then pivot
+            if( compareData(Node.getData(pivot), Node.getData(end)) > 0 ){ Node.swapData(start, end); }
             else{ end = end->PREV; }
         }
         else{ start = start->NEXT; }               // if less then pivot update start
     }
     // at this point start and end is same node
-    if( comparator(start, pivot) > 0){ swapData(start, pivot); }
+    if( compareData(Node.getData(start), Node.getData(pivot)) > 0){ Node.swapData(start, pivot); }
     return start;
 }
 
 void quickSort( struct list *list,
                 struct node *lo,
                 struct node *hi,
-                COMPARATOR){
+                DATA_COMPARATOR){
 
     if( !(lo && hi) ){ return; }
     if( Node.indexOf(lo) < Node.indexOf(hi) ){
-        struct node *p = partition(list, lo, hi, comparator);
-        quickSort(list, lo, p->PREV, comparator);
-        quickSort(list, p->NEXT, hi, comparator);
+        struct node *p = partition(list, lo, hi, compareData);
+        quickSort(list, lo, p->PREV, compareData);
+        quickSort(list, p->NEXT, hi, compareData);
     }
 }
 
-int compareBornDate(struct node *n1, struct node *n2){
-    return Node.getData(n1)->yearBorn -Node.getData(n2)->yearBorn;
-}
-
-int compareId(struct node* n1, struct node* n2){
-    return Node.getData(n1)->id -Node.getData(n2)->id;
-}
+// void swapData(struct node *n1, struct node *n2){
+//     struct data *tmp = Node.getData(n1);
+//     Node.setData( n1, Node.getData(n2) );
+//     Node.setData( n2, tmp );
+// }
+//
+// int compareBornDate(struct node *n1, struct node *n2){
+//     return Node.getData(n1)->yearBorn -Node.getData(n2)->yearBorn;
+// }
+//
+// int compareId(struct node* n1, struct node* n2){
+//     return Node.getData(n1)->id -Node.getData(n2)->id;
+// }
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -201,11 +203,11 @@ bool list_insertAfter( struct list *this, struct data *data ){ // TODO: remove r
     }
 }
 
-bool list_insert( struct list *this, struct data *data, COMPARATOR ){
+bool list_insert( struct list *this, struct data *data, DATA_COMPARATOR ){
     struct node *tmp = Node.of(data);
     List.getFirst(this);        // resets CURRENT_NODE to first position
     while( Node.hasNext(this->CURRENT_NODE) ){
-        if( comparator(tmp, this->CURRENT_NODE) < 0 ){
+        if( compareData(Node.getData(tmp), Node.getData(this->CURRENT_NODE)) < 0 ){
             Node.insertBefore(this->CURRENT_NODE, data);
             this->size++;
             free(tmp);
@@ -218,8 +220,8 @@ bool list_insert( struct list *this, struct data *data, COMPARATOR ){
     return false;
 }
 
-void list_sort( struct list *this, COMPARATOR ){
-    quickSort(this, this->FIRST_NODE, this->LAST_NODE, comparator);
+void list_sort( struct list *this, DATA_COMPARATOR ){
+    quickSort(this, this->FIRST_NODE, this->LAST_NODE, compareData);
 }
 
 // gets number of nodes in list

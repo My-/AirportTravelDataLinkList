@@ -16,6 +16,8 @@
 #include <stdbool.h>    // boolean
 #include <string.h>     // string
 
+#define DATA_COMPARATOR int(*compareData)(struct data*, struct data*)
+
 // https://stackoverflow.com/a/2181941/5322506
 typedef enum{ NO_COUNTRY, UK, EUROPE, ASIA, AMERICAS, AUSTRALIA, SIZE_COUNTIES }Countries;
 typedef enum{ NO_TRAVEL_CLASS, ECONOMY, PREMIUM, BUSINESS, FIRST, SIZE_TRAVEL_CLASS }TravelClass;
@@ -46,6 +48,9 @@ void data_setTravelData(struct data *this, Countries country, TravelClass travel
                         TravelFrequency travelFrequency, StayDuration stayDuration);
 char* data_toString(struct data *this);
 
+int data_compareBornDate(struct data *n1, struct data *n2);
+int data_compareId(struct data* n1, struct data* n2);
+
 /*** "Class" static fields (methods, class variables) ***/
 extern struct data_type {
     struct data * (*of)(int id, char *name, char *surname, int yearBorn, char *email);
@@ -55,6 +60,8 @@ extern struct data_type {
     char * (*getEmail)( struct data *this );
     void (*setId)( struct data *this, int id );
     char * (*toString)( struct data *this );
+    int (*compareBornDate)(struct data *n1, struct data *n2);
+    int (*compareId)(struct data* n1, struct data* n2);
     int counter;
 } Data; // <-- it's like a "class" name
 

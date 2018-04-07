@@ -104,9 +104,9 @@ void list_insertSorted_test(){
     List.addEnd( myList, Data.of(7, "Clob", "Doe", 2000, "jhon@mail.com") );
     List.addEnd( myList, Data.of(11, "Clob", "Doe", 2000, "jhon@mail.com") );
 
-    List.insert( myList, Data.of(2, "Clob", "Doe", 2000, "jhon@mail.com"), compareId );
-    List.insert( myList, Data.of(6, "Clob", "Doe", 2000, "jhon@mail.com"), compareId );
-    List.insert( myList, Data.of(13, "Clob", "Doe", 2000, "jhon@mail.com"), compareId );
+    List.insert( myList, Data.of(2, "Clob", "Doe", 2000, "jhon@mail.com"), Data.compareId );
+    List.insert( myList, Data.of(6, "Clob", "Doe", 2000, "jhon@mail.com"), Data.compareId );
+    List.insert( myList, Data.of(13, "Clob", "Doe", 2000, "jhon@mail.com"), Data.compareId );
 
     List.showAll(myList);
     Test.assertEqual_Int(8, List.size(myList), "size check");
@@ -149,7 +149,7 @@ void list_sort_test(){
     Test.assertEqual_Int(10, List.size(myList), "size check");
     List.showAll(myList);
 
-    List.sort(myList, compareId);
+    List.sort(myList, Data.compareId);
     Test.assertEqual_Int(10, List.get(myList, 0)->id, "id at index: 0");
     Test.assertEqual_Int(14, List.get(myList, 1)->id, "id at index: 1");
     Test.assertEqual_Int(19, List.get(myList, 2)->id, "id at index: 2");

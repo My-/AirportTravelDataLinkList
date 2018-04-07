@@ -10,11 +10,12 @@
 #include <stdbool.h>    // boolean
 // #include <string.h>     // string
 
-#define COMPARATOR int(*comparator)(struct node*, struct node*)
+// #define COMPARATOR_NODE int(*comparator)(struct node*, struct node*)
+// #define COMPARATOR_DATA int(*comparator)(struct data*, struct data*)
 
-int compareBornDate(struct node *n1, struct node *n2);
-int compareId(struct node* n1, struct node* n2);
-void swapData(struct node *n1, struct node *n2);
+// int compareBornDate(struct node *n1, struct node *n2);
+// int compareId(struct node* n1, struct node* n2);
+// void swapData(struct node *n1, struct node *n2);
 
 
 // List "class"
@@ -38,8 +39,8 @@ bool list_addEnd( struct list *this, struct data *data );
 bool list_addFront( struct list *this, struct data *data );
 bool list_insertBefore( struct list *this, struct data *data );
 bool list_insertAfter( struct list *this, struct data *data );
-bool list_insert( struct list *this, struct data *data, COMPARATOR );
-void list_sort( struct list *this, COMPARATOR );
+bool list_insert( struct list *this, struct data *data, DATA_COMPARATOR );
+void list_sort( struct list *this, DATA_COMPARATOR );
 int list_size( struct list *this );
 void list_showAll( struct list *this );
 
@@ -55,8 +56,8 @@ extern struct list_type {
     bool (*addFront)( struct list *this, struct data *data );
     bool (*insertBefore)( struct list *this, struct data *data );
     bool (*insertAfter)( struct list *this, struct data *data );
-    bool (*insert)( struct list *this, struct data *data, COMPARATOR );
-    void (*sort)( struct list *this, COMPARATOR );
+    bool (*insert)( struct list *this, struct data *data, DATA_COMPARATOR );
+    void (*sort)( struct list *this, DATA_COMPARATOR );
     int (*size)(struct list * this);
     void (*showAll)( struct list *this );
 } List;

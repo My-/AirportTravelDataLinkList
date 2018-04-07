@@ -20,6 +20,8 @@ struct data_type Data = {
     .getEmail = data_getEmail,
     .setId = data_setId,
     .toString = data_toString,
+    .compareBornDate = data_compareBornDate,
+    .compareId = data_compareId,
     .counter = 0
 };
 
@@ -109,4 +111,12 @@ char* data_toString(struct data *this){
     strcat(str, "\n}\n");
 
     return str;
+}
+
+int data_compareBornDate(struct data *d1, struct data *d2){
+    return d1->yearBorn -d2->yearBorn;
+}
+
+int data_compareId(struct data *d1, struct data *d2){
+    return d1->id -d2->id;
 }
