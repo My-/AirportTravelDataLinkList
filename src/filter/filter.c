@@ -7,11 +7,22 @@
 
 // Filter "class"
 struct filter Filter = {
+    .on = filter_on,
     .travelFrom = filter_travelFrom,
     .travelClass = filter_travelClass,
     .travelFrequency = filter_travelFrequency,
     .stayDuration = filter_stayDuration
 };
+
+
+/**
+*   Function takes ( data, FilterFunction, filtering parameter )
+*   returns true if match;
+*/
+bool filter_on( struct data * data, bool(*filter(int ))(struct data*), int value ){
+    return filter(value)(data);
+}
+
 
 // Country filters.
 bool filterUK(struct data *data){ return data->country == UK; }
@@ -91,12 +102,4 @@ bool (*filter_stayDuration(int duration))(struct data*){
         default: filter = filterFalse;  // if not from list return false
     }
     return filter;
-}
-
-/**
-*   Function takes ( data, FilterFunction, filtering parameter )
-*   returns true if match;
-*/
-bool takeFilter( struct data * data, bool(*filter(int ))(struct data*), int value ){
-    return filter(value)(data);
 }

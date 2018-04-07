@@ -5,15 +5,15 @@ void filter_takeFilter_test(){
     struct data *jhon = Data.of(50, "Jhon", "Doe", 1999, "my@email.com");
     Data.setTravelData(jhon, EUROPE, FIRST, LESS_3_TIMES, ONE_DAY);
 
-    Test.assertTrue( takeFilter(jhon, Filter.travelFrom, EUROPE), "takeFilter()");
-    Test.assertTrue( takeFilter(jhon, Filter.travelClass, FIRST), "takeFilter()");
-    Test.assertTrue( takeFilter(jhon, Filter.travelFrequency, LESS_3_TIMES), "takeFilter()");
-    Test.assertTrue( takeFilter(jhon, Filter.stayDuration, ONE_DAY), "takeFilter()");
+    Test.assertTrue( Filter.on(jhon, Filter.travelFrom, EUROPE), "takeFilter()");
+    Test.assertTrue( Filter.on(jhon, Filter.travelClass, FIRST), "takeFilter()");
+    Test.assertTrue( Filter.on(jhon, Filter.travelFrequency, LESS_3_TIMES), "takeFilter()");
+    Test.assertTrue( Filter.on(jhon, Filter.stayDuration, ONE_DAY), "takeFilter()");
 
-    Test.assertFalse( takeFilter(jhon, Filter.travelFrom, UK), "takeFilter()");
-    Test.assertFalse( takeFilter(jhon, Filter.travelClass, BUSINESS), "takeFilter()");
-    Test.assertFalse( takeFilter(jhon, Filter.travelFrequency, LESS_5_TIMES), "takeFilter()");
-    Test.assertFalse( takeFilter(jhon, Filter.stayDuration, MORE_7_DAYS), "takeFilter()");
+    Test.assertFalse( Filter.on(jhon, Filter.travelFrom, UK), "takeFilter()");
+    Test.assertFalse( Filter.on(jhon, Filter.travelClass, BUSINESS), "takeFilter()");
+    Test.assertFalse( Filter.on(jhon, Filter.travelFrequency, LESS_5_TIMES), "takeFilter()");
+    Test.assertFalse( Filter.on(jhon, Filter.stayDuration, MORE_7_DAYS), "takeFilter()");
 }
 
 void filter_filters_test(){
