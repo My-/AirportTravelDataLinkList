@@ -1,7 +1,7 @@
 
 
 #ifndef FILTER
-#define FILTER bool (*on)( struct data *data, bool(*filter(int ))(struct data*), int value )
+#define FILTER bool (*filter(int))(struct data*)
 
 #include "../data/data.h"
 #include <stdio.h>
@@ -11,7 +11,7 @@
 
 
 // prototype returns function
-bool filter_on( struct data *data, bool(*filter(int ))(struct data*), int value );
+bool filter_on( struct data *data, int machValue, FILTER );
 bool (*filter_travelFrom(int country))(struct data*);
 bool (*filter_travelClass(int tclass))(struct data*);
 bool (*filter_travelFrequency(int frequancy))(struct data*);
@@ -19,7 +19,7 @@ bool (*filter_stayDuration(int duration))(struct data*);
 
 
 extern struct filter {
-    FILTER;
+    bool (*on)( struct data *data, int value, FILTER );
     bool (*((*travelFrom)(int country)))(struct data*);
     bool (*((*travelClass)(int tclass)))(struct data*);
     bool (*((*travelFrequency)(int frequancy)))(struct data*);

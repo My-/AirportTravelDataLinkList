@@ -20,7 +20,7 @@ bool db_login( struct db *this, char *username, char *password );
 bool db_addRecord( struct db *this, struct data *data );
 bool db_removeRecord(struct db *this, int id );
 struct data * db_getRecord( struct db *this, int id );
-struct list * db_search( struct db *this, COMPARATOR_DATA );
+struct list * db_search( struct db *this, int machValue, FILTER );
 bool db_save( struct db *this, char *fileName );
 bool db_load( struct db *this, char *fileName );
 void db_showAll( struct db *this );
@@ -31,7 +31,7 @@ extern struct db_type {
     bool (*addRecord)( struct db *this, struct data *data );
     bool (*removeRecord)(struct db *this, int id );
     struct data * (*getRecord)( struct db *this, int id );
-    struct list * (*search)( struct db *this, COMPARATOR_DATA );
+    struct list * (*search)( struct db *this, int machValue, FILTER );
     bool (*save)( struct db *this, char *fileName );
     bool (*load)( struct db *this, char *fileName );
     void (*showAll)( struct db *this );

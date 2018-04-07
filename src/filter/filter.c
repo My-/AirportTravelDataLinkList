@@ -19,8 +19,8 @@ struct filter Filter = {
 *   Function takes ( data, FilterFunction, filtering parameter )
 *   returns true if match;
 */
-bool filter_on( struct data * data, bool(*filter(int ))(struct data*), int value ){
-    return filter(value)(data);
+bool filter_on( struct data * data, int machValue, FILTER ){
+    return filter(machValue)(data);
 }
 
 

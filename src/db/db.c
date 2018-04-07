@@ -54,13 +54,18 @@ struct data * db_getRecord( struct db *this, int id ){
     return NULL;
 }
 
-struct list * db_search( struct db *this, COMPARATOR_DATA ){
+struct list * db_search( struct db *this, int machValue, FILTER ){
     struct list *R = List.empty();
     List.getFirst(db->list);        // reset current node to first node
     struct node *currentNode = db->list->CURRENT_NODE;
+    struct data *currentData;
 
     while( Node.hasNext(currentNode) ){
-        if( )
+        currentData = Node.getData(currentNode);
+
+        if( Filter.on(currentData, machValue, filter) ){
+            List.addEnd(R, currentData);
+        }
     }
 
     return R;
