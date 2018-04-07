@@ -104,9 +104,9 @@ void list_insertSorted_test(){
     List.addEnd( myList, Data.of(7, "Clob", "Doe", 2000, "jhon@mail.com") );
     List.addEnd( myList, Data.of(11, "Clob", "Doe", 2000, "jhon@mail.com") );
 
-    List.insert( myList, Data.of(2, "Clob", "Doe", 2000, "jhon@mail.com"), Data.compareId );
-    List.insert( myList, Data.of(6, "Clob", "Doe", 2000, "jhon@mail.com"), Data.compareId );
-    List.insert( myList, Data.of(13, "Clob", "Doe", 2000, "jhon@mail.com"), Data.compareId );
+    List.insertUnique( myList, Data.of(2, "Clob", "Doe", 2000, "jhon@mail.com"), Data.compareId );
+    List.insertUnique( myList, Data.of(6, "Clob", "Doe", 2000, "jhon@mail.com"), Data.compareId );
+    List.insertUnique( myList, Data.of(13, "Clob", "Doe", 2000, "jhon@mail.com"), Data.compareId );
 
     List.showAll(myList);
     Test.assertEqual_Int(8, List.size(myList), "size check");

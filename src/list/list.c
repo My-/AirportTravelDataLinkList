@@ -17,7 +17,7 @@ struct list_type List = {
     .addFront = list_addFront,
     .insertBefore = list_insertBefore,
     .insertAfter = list_insertAfter,
-    .insert = list_insert,
+    .insertUnique = list_insertUnique,
     .sort = list_sort,
     .size = list_size,
     .showAll = list_showAll
@@ -65,20 +65,6 @@ void quickSort( struct list *list,
         quickSort(list, p->NEXT, hi, compareData);
     }
 }
-
-// void swapData(struct node *n1, struct node *n2){
-//     struct data *tmp = Node.getData(n1);
-//     Node.setData( n1, Node.getData(n2) );
-//     Node.setData( n2, tmp );
-// }
-//
-// int compareBornDate(struct node *n1, struct node *n2){
-//     return Node.getData(n1)->yearBorn -Node.getData(n2)->yearBorn;
-// }
-//
-// int compareId(struct node* n1, struct node* n2){
-//     return Node.getData(n1)->id -Node.getData(n2)->id;
-// }
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -203,7 +189,7 @@ bool list_insertAfter( struct list *this, struct data *data ){ // TODO: remove r
     }
 }
 
-bool list_insert( struct list *this, struct data *data, DATA_COMPARATOR ){
+bool list_insertUnique( struct list *this, struct data *data, DATA_COMPARATOR ){
     struct node *tmp = Node.of(data);
     List.getFirst(this);        // resets CURRENT_NODE to first position
     while( Node.hasNext(this->CURRENT_NODE) ){
@@ -212,6 +198,8 @@ bool list_insert( struct list *this, struct data *data, DATA_COMPARATOR ){
             this->size++;
             free(tmp);
             return true;
+        }else if( compareData(Node.getData(tmp), Node.getData(this->CURRENT_NODE)) == 0  ){
+            return false; // not unique
         }
         List.getNext(this);     // move CURRENT_NODE to next position
     }
