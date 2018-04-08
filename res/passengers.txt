@@ -1,0 +1,10 @@
+# https://randomuser.me/
+# id, name, surname, yearBorn, email, country, travelClass, travelFrequency, stayDuration.
+1   Jhon        Doe         2000    jhon@mail.ie    1   1   1   1
+3   Ada         Lovelace    1815    ada@mail.ie     1   4   3   4
+5   Anne        Blunt       1837    Anne@mail.ie    1   2   2   3
+7   Nikola      Tesla       1856    tesla@mail.ie   2   4   1   4
+11  Elon        Musk        1971    elon@mail.ie    3   4   3   3
+13  Leonhard    Euler       1707    euler@mail.ie   1   1   1   4
+17  Donald      Trump       1946    trump@mail.ie   5   4   3   4
+19  Vladimir    Putin       1952    putin@mail.ie   3   4   1   4

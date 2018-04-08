@@ -4,18 +4,21 @@
 
 #include "../data/data.h"
 #include "../list/list.h"
+#include "../filter/filter.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>    // boolean
 // #include <string.h>     // string
 
 #define ADMIN_DATA_FILE "./res/admins.data"
+#define DB_FILE "./res/passengers.txt"
 
 struct db {
     struct list *list;
     struct db_type * _it;
 };
 
+struct db * db_empty();
 bool db_login( struct db *this, char *username, char *password );
 bool db_addRecord( struct db *this, struct data *data );
 bool db_removeRecord(struct db *this, int id );
@@ -27,6 +30,7 @@ void db_showAll( struct db *this );
 // void db_display( struct db *this, COMPARATOR_DATA ); // use List.showAll( DB.search( filter ) )
 
 extern struct db_type {
+    struct db * (*empty)();
     bool (*login)( struct db *this, char *username, char *password );
     bool (*addRecord)( struct db *this, struct data *data );
     bool (*removeRecord)(struct db *this, int id );
@@ -36,7 +40,7 @@ extern struct db_type {
     bool (*load)( struct db *this, char *fileName );
     void (*showAll)( struct db *this );
     // void (*display)( struct db *this, COMPARATOR_DATA );
-} DB;
+} DataBase;
 
 
 #endif

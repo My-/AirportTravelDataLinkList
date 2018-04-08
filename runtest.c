@@ -4,6 +4,7 @@
 #include "./test/filter_test.h"
 #include "./test/node_test.h"
 #include "./test/list_test.h"
+#include "./test/db_test.h"
 
 int main() {
 
@@ -12,6 +13,7 @@ int main() {
     filter_runAll();
     node_runAll();
     list_runAll();
+    db_runAll();
 
     return 0;
 }

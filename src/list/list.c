@@ -216,10 +216,16 @@ void list_sort( struct list *this, DATA_COMPARATOR ){
 int list_size(struct list * this){ return this->size; }
 
 void list_showAll( struct list *this ){
-    List.getFirst(this);
-    printf("%d, ", this->CURRENT_NODE->data->id);
+    if( !this ){ puts("NULL list."); return; }
+    struct data* data = List.getFirst(this);
+    printf("%-4d %-10s %-10s %5d %15s %2d %2d %2d %2d\n", data->id, data->name, data->surname, data->yearBorn, data->email, data->country, data->travelClass, data->travelFrequency, data->stayDuration);
+
+
     while( Node.hasNext(this->CURRENT_NODE) ){
-        printf("%d, ", List.getNext(this)->id);
+        // puts(Data.toString(data));
+        data = List.getNext(this);
+        printf("%-4d %-10s %-10s %5d %15s %2d %2d %2d %2d\n", data->id, data->name, data->surname, data->yearBorn, data->email, data->country, data->travelClass, data->travelFrequency, data->stayDuration);
     }
     puts("");
+    free(data);
 }
