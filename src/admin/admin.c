@@ -40,8 +40,9 @@ bool adminLoginValidate(char *username, char *password){
 /**
 *   Checks if username and password are correct (excist in "admins.data" file).
 */
-void adminLogin(){
-    char username[10], password[10];
+char* adminLogin(){
+    char * username = (char*)malloc(sizeof(char)*NAME_LEN);
+    char password[10];
 
     printf("\tEnter username: ");
     scanf("%s", username);
@@ -55,6 +56,8 @@ void adminLogin(){
         printf("\tEnter password: ");
         strcpy(password, takePassword());
     }
+
+    return username;
 }
 
 char* takePassword(){

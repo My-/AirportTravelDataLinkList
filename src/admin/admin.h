@@ -13,12 +13,12 @@
 #include <string.h>     // string
 
 #define ADMIN_DATA_FILE "./res/admins.data"
-
+#define NAME_LEN 6
 
 /**
 *   Checks if username and password are correct (excist in "admins.data" file).
 */
-void adminLogin();
+char* adminLogin();
 
 /*
 *   Checks if username and password are correct (excist in "admins.data" file).
