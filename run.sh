@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # https://stackoverflow.com/a/7110046
 # compile
-gcc main.c ./src/*.c -o ./out/AirportDB.out
+gcc  main.c ./src/test/*.c ./src/admin/*.c ./src/data/*.c ./src/filter/*.c ./src/node/*.c ./src/list/*.c ./src/db/*.c -o ./out/main.out
 
 # run
-./out/AirportDB.out
+./out/main.out
