@@ -29,6 +29,8 @@ bool db_load( struct db *this, char *fileName );
 void db_showAll( struct db *this );
 // void db_display( struct db *this, COMPARATOR_DATA ); // use List.showAll( DB.search( filter ) )
 
+// void adminLogin();
+
 extern struct db_type {
     struct db * (*empty)();
     bool (*login)( struct db *this, char *username, char *password );

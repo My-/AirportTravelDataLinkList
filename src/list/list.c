@@ -149,7 +149,7 @@ struct data * list_getPrev(struct list *this ){
 }
 
 bool list_addEnd( struct list *this, struct data *data ){
-    if( this->FIRST_NODE != NULL ){         // not empty list
+    if( this->FIRST_NODE ){                 // not empty list
         Node.insertAfter(this->LAST_NODE, data);
         this->LAST_NODE = this->LAST_NODE->NEXT;
         this->size++;
@@ -158,7 +158,7 @@ bool list_addEnd( struct list *this, struct data *data ){
 }
 
 bool list_addFront( struct list *this, struct data *data ){
-    if( this->FIRST_NODE != NULL ){         // not empty list
+    if( this->FIRST_NODE ){                 // not empty list
         Node.insertBefore(this->FIRST_NODE, data);
         this->FIRST_NODE = this->FIRST_NODE->PREV;
         this->size++;
@@ -190,21 +190,33 @@ bool list_insertAfter( struct list *this, struct data *data ){ // TODO: remove r
 }
 
 bool list_insertUnique( struct list *this, struct data *data, DATA_COMPARATOR ){
-    struct node *tmp = Node.of(data);
-    List.getFirst(this);        // resets CURRENT_NODE to first position
+    // List.getFirst(this);
+    if( compareData(data, List.getFirst(this)) < 0 ){    // resets current to first position
+        // puts("to front");
+        List.addFront(this, data);
+        return true;
+    }
+
     while( Node.hasNext(this->CURRENT_NODE) ){
-        if( compareData(Node.getData(tmp), Node.getData(this->CURRENT_NODE)) < 0 ){
+        List.getNext(this);     // move CURRENT_NODE to next position
+
+        // printf("%d - %d = %d\n",data->id, this->CURRENT_NODE->data->id, compareData(data, Node.getData(this->CURRENT_NODE)));
+
+        if( compareData(data, Node.getData(this->CURRENT_NODE)) < 0 ){
+            // puts("inserting");
             Node.insertBefore(this->CURRENT_NODE, data);
             this->size++;
-            free(tmp);
             return true;
-        }else if( compareData(Node.getData(tmp), Node.getData(this->CURRENT_NODE)) == 0  ){
+        }
+        else if( compareData(data, Node.getData(this->CURRENT_NODE)) == 0  ){
+            // puts("not unique");
             return false; // not unique
         }
-        List.getNext(this);     // move CURRENT_NODE to next position
+        // this->CURRENT_NODE = this->CURRENT_NODE->NEXT;
     }
+    // puts("add end");
+    if( compareData(data, Node.getData(this->LAST_NODE)) == 0  ){ return false; }
     List.addEnd(this, data);
-    free(tmp);
     return false;
 }
 
@@ -216,16 +228,15 @@ void list_sort( struct list *this, DATA_COMPARATOR ){
 int list_size(struct list * this){ return this->size; }
 
 void list_showAll( struct list *this ){
+    int index = 0;
     if( !this ){ puts("NULL list."); return; }
     struct data* data = List.getFirst(this);
-    printf("%-4d %-10s %-10s %5d %15s %2d %2d %2d %2d\n", data->id, data->name, data->surname, data->yearBorn, data->email, data->country, data->travelClass, data->travelFrequency, data->stayDuration);
-
+    printf("[%d]: %-4d %-10s %-10s %5d %15s %2d %2d %2d %2d\n",index, data->id, data->name, data->surname, data->yearBorn, data->email, data->country, data->travelClass, data->travelFrequency, data->stayDuration);
 
     while( Node.hasNext(this->CURRENT_NODE) ){
         // puts(Data.toString(data));
+        index++;
         data = List.getNext(this);
-        printf("%-4d %-10s %-10s %5d %15s %2d %2d %2d %2d\n", data->id, data->name, data->surname, data->yearBorn, data->email, data->country, data->travelClass, data->travelFrequency, data->stayDuration);
+        printf("[%d]: %-4d %-10s %-10s %5d %15s %2d %2d %2d %2d\n",index, data->id, data->name, data->surname, data->yearBorn, data->email, data->country, data->travelClass, data->travelFrequency, data->stayDuration);
     }
-    puts("");
-    free(data);
 }

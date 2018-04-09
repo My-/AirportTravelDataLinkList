@@ -127,9 +127,6 @@ bool db_load( struct db *this, char *fileName ){
                     data->surname = (char*)malloc(sizeof(char)*strlen(str));
                     memcpy(data->surname, str, strlen(str) +1);
 
-                    // puts("data");
-                    // puts(data->name);
-                    // puts(data->surname);
                     fscanf(pFile, "%d", &data->yearBorn);
 
                     fscanf(pFile, "%s", str);
@@ -141,26 +138,12 @@ bool db_load( struct db *this, char *fileName ){
                     List.addEnd(this->list, data);
 
                     // printf("size: %d\n", List.size(this->list));
-                    // printf("%d, %s, %s, %d, %s, %d, %d, %d, %d\n", data->id, data->name, data->surname, data->yearBorn, data->email, data->country, data->travelClass, data->travelFrequency, data->stayDuration);
-                    // List.showAll(this->list);
-                    // puts( Data.toString(Node.getData(this->list->CURRENT_NODE)));
-                }
+                    // printf("%d, %s, %s, %d, %s, %d, %d, %d, %d\n", data->id, data->name, data->surname, data->yearBorn, data->email, data->country, data->travelClass, data->travelFrequency, data->stayDuration);dd###xz
 
-                // if( ch == '#' ){       // skip coments
-                //      puts("comment");
-                //      fgets (input, 600, pFile);
-                // }
-				// else{
-                //     // printf("Input: %s\n", input);
-                //     printf("Input: %d\n", (ch -'0'));
-                //     fgets (input, 600, pFile);
-                //
-                // }
+                }
 			}
 		}
         fclose(pFile);
-        // printf("size: %d\n", List.size(this->list));
-        // List.showAll(this->list);
         return true;
     }
     return false;
