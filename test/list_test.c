@@ -98,21 +98,30 @@ void list_insert_test(){
 
 void list_insertSorted_test(){
     Test.display("List insert ordered data test", MAGENTA_TEXT);
-    struct list* myList = List.of( Data.of(1, "Jhon", "Doe", 2001, "jhon@mail.com") );
-    List.addEnd( myList, Data.of(3, "Bob", "Doe", 2000, "jhon@mail.com") );
-    List.addEnd( myList, Data.of(5, "Clob", "Doe", 2000, "jhon@mail.com") );
-    List.addEnd( myList, Data.of(7, "Clob", "Doe", 2000, "jhon@mail.com") );
-    List.addEnd( myList, Data.of(11, "Clob", "Doe", 2000, "jhon@mail.com") );
+    struct list* myList = List.empty();
+    List.addEnd( myList, Data.of(3, "3", "3-3", 2003, "3@mail.com") );
+    List.addEnd( myList, Data.of(5, "5", "5-5", 2005, "5@mail.com") );
+    List.addEnd( myList, Data.of(7, "7", "7-7", 2007, "7@mail.com") );
+    List.addEnd( myList, Data.of(11, "11", "11-11", 2011, "11@mail.com") );
+Test.assertEqual_Int(4, List.size(myList), "size check");
 
-    List.insertUnique( myList, Data.of(2, "Clob", "Doe", 2000, "jhon@mail.com"), Data.compareId );
-    List.insertUnique( myList, Data.of(6, "Clob", "Doe", 2000, "jhon@mail.com"), Data.compareId );
-    List.insertUnique( myList, Data.of(13, "Clob", "Doe", 2000, "jhon@mail.com"), Data.compareId );
+    List.insertUnique( myList, Data.of(2, "22", "2+2", 2002, "2@mail.com"), Data.compareId );
+Test.assertEqual_Int(5, List.size(myList), "size check after 2");
 
-    List.showAll(myList);
-    Test.assertEqual_Int(8, List.size(myList), "size check");
-    Test.assertEqual_Int(2, List.get(myList, 1)->id, "at index 1");
-    Test.assertEqual_Int(6, List.get(myList, 4)->id, "at index 4");
-    Test.assertEqual_Int(13, List.get(myList, 7)->id, "at index 7");
+    List.insertUnique( myList, Data.of(6, "66", "6+6", 2006, "6@mail.com"), Data.compareId );
+Test.assertEqual_Int(6, List.size(myList), "size check after 5");
+
+    List.insertUnique( myList, Data.of(13, "13", "13+13", 2013, "13@mail.com"), Data.compareId );
+Test.assertEqual_Int(7, List.size(myList), "size check after 13");
+
+    List.insertUnique( myList, Data.of(13, "13", "13+13", 2013, "13@mail.com"), Data.compareId );
+
+    Test.assertEqual_Int(7, List.size(myList), "size check after dublicate");
+
+    Test.assertEqual_Int(2, List.get(myList, 0)->id, "at index 1");
+    Test.assertEqual_Int(6, List.get(myList, 3)->id, "at index 4");
+    Test.assertEqual_Int(13, List.get(myList, 6)->id, "at index 7");
+    // List.showAll(myList);
 }
 
 void list_getAtIndex_test(){
@@ -147,7 +156,7 @@ void list_sort_test(){
     List.addEnd( myList, Data.of(31, "Bob", "Doe", 2000, "jhon@mail.com") );
 
     Test.assertEqual_Int(10, List.size(myList), "size check");
-    List.showAll(myList);
+    // List.showAll(myList);
 
     List.sort(myList, Data.compareId);
     Test.assertEqual_Int(10, List.get(myList, 0)->id, "id at index: 0");

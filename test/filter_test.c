@@ -32,8 +32,8 @@ void filter_filters_test(){
     Test.assertTrue( Filter.travelClass(BUSINESS)(jhon), "Filter.travelClass(BUSINESS)(jhon)");
     Test.assertFalse( Filter.travelClass(ECONOMY)(jhon), "Filter.travelClass(ECONOMY)(jhon)");
 
-
 }
+
 
 
 void filter_runAll(){

@@ -19,7 +19,21 @@ void db_load_test(){
     struct db *db = DataBase.empty();
 
     DataBase.load(db, DB_FILE);
-    List.showAll(db->list);
+    Test.assertEqual_Int(8, List.size(db->list), "list size");
+    // List.showAll(db->list);
+
+    Test.display("DB add record test", MAGENTA_TEXT);
+
+    struct data *benny = Data.of(15, "Benny", "Hill ", 1924, "bhill@mail.com");
+    Data.setTravelData(benny, UK, ECONOMY, LESS_3_TIMES, MORE_7_DAYS);
+    DataBase.addRecord(db, benny);
+
+    Test.assertEqual_Int(15, List.get(db->list, 6)->id, "at index 6");
+    Test.assertEqual_Int(19, List.getLast(db->list)->id, "at last index");
+
+    Test.assertEqual_Int(9, List.size(db->list), "list size");
+
+    // List.showAll(db->list);
 }
 
 

@@ -62,7 +62,7 @@ void main(){
 	}
 
 	for (i = 0;i < 7;i++){
-		printf("The name of day %d is %s\n", i + 1,namesofweek[i]);
+		printf("The name of day %d is %s\n", i + 1, namesofweek[i]);
 	}
 
 	for (i = 0;i < 12;i++){
