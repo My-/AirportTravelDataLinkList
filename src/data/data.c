@@ -67,8 +67,7 @@ struct data * data_of(int id, char *name, char *surname, int yearBorn, char *ema
     return this;
 }
 
-void data_setTravelData( struct data *this, Countries country, TravelClass travelClass,
-                        TravelFrequency travelFrequency, StayDuration stayDuration ){
+void data_setTravelData( struct data *this, int country, int travelClass, int travelFrequency, int stayDuration ){
     this->country = country;
     this->travelClass = travelClass;
     this->travelFrequency = travelFrequency;
@@ -105,6 +104,7 @@ bool data_remove( struct data *this){
 // https://www.tutorialspoint.com/cprogramming/c_strings.htm
 // https://stackoverflow.com/a/32819876/5322506
 char* data_toString(struct data *this){
+    printf("%d %d\n", this->id, this->yearBorn);
     // ID toString
     int len = snprintf( NULL, 0, "%d", this->id );
     char* id_str = malloc( len +1 );
@@ -115,31 +115,35 @@ char* data_toString(struct data *this){
     char* year_Str = malloc( len + 1 );
     snprintf( year_Str, len + 1, "%d", this->yearBorn );
 
+    printf("%s %s : %d %d\n", id_str, year_Str, this->id, this->yearBorn);
+
     // Create Data string
     char* str = malloc( 1 );
     strcat(str, "{");
     strcat(str, "\n\tId: ");
     strcat(str, id_str);
-    free(id_str);   // free memory from temporary variable
     strcat(str, "\n\tName: ");
     strcat(str, this->name);
     strcat(str, "\n\tSurname: ");
     strcat(str, this->surname);
     strcat(str, "\n\tYear born: ");
     strcat(str, year_Str);
-    free(year_Str);   // free memory from temporary variable
     strcat(str, "\n\tEmail: ");
     strcat(str, this->email);
     strcat(str, "\n\tCountry: ");
-    strcat(str, country_toStr[this->country]);
+    strcat(str, (this->country < SIZE_COUNTIES ? country_toStr[this->country] : country_toStr[0]));
     strcat(str, "\n\tTravel class: ");
-    strcat(str, travelClass_toStr[this->travelClass]);
+    strcat(str, (this->travelClass < SIZE_TRAVEL_CLASS ? travelClass_toStr[this->travelClass] : travelClass_toStr[0]));
     strcat(str, "\n\tTravel freaquaency: ");
-    strcat(str, travelFrequency_toStr[this->travelFrequency]);
+    strcat(str, (this->travelFrequency < SIZE_TRAVEL_FREQUENCY ? travelFrequency_toStr[this->travelFrequency] : travelFrequency_toStr[0]));
     strcat(str, "\n\tStay duration: ");
-    strcat(str, stayDuration_toStr[this->stayDuration]);
+    strcat(str, (this->stayDuration < SIZE_STAY_DURATION ? stayDuration_toStr[this->stayDuration] : stayDuration_toStr[0]));
     strcat(str, "\n}\n");
 
+    printf("%s %s : %d %d\n", id_str, year_Str, this->id, this->yearBorn);
+
+    free(id_str);   // free memory from temporary variable
+    free(year_Str);   // free memory from temporary variable
     return str;
 }
 
