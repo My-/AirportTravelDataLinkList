@@ -20,7 +20,8 @@ struct list_type List = {
     .insertUnique = list_insertUnique,
     .sort = list_sort,
     .size = list_size,
-    .showAll = list_showAll
+    .showAll = list_showAll,
+    .isEmpty = list_isEmpty
 };
 
 
@@ -239,4 +240,9 @@ void list_showAll( struct list *this ){
         data = List.getNext(this);
         printf("[%d]: %-4d %-10s %-10s %5d %15s %2d %2d %2d %2d\n",index, data->id, data->name, data->surname, data->yearBorn, data->email, data->country, data->travelClass, data->travelFrequency, data->stayDuration);
     }
+}
+
+bool list_isEmpty( struct list *this ){
+    if( this == NULL ){ return true; }
+    return this->FIRST_NODE == NULL;
 }

@@ -16,6 +16,7 @@ bool (*filter_travelFrom(int country))(struct data*);
 bool (*filter_travelClass(int tclass))(struct data*);
 bool (*filter_travelFrequency(int frequancy))(struct data*);
 bool (*filter_stayDuration(int duration))(struct data*);
+bool (*filter_id(int id))(struct data*);
 
 
 extern struct filter {
@@ -24,6 +25,8 @@ extern struct filter {
     bool (*((*travelClass)(int tclass)))(struct data*);
     bool (*((*travelFrequency)(int frequancy)))(struct data*);
     bool (*((*stayDuration)(int duration)))(struct data*);
+    bool (*((*id)(int id)))(struct data*);
+
 } Filter;
 
 #endif

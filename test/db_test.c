@@ -38,8 +38,46 @@ void db_load_test(){
 
 
 
+void db_search_test(){
+    Test.display("DB Search test", MAGENTA_TEXT);
+
+    struct list *list;
+    struct data* data = Data.empty();
+    struct db *db = DataBase.empty();
+    DataBase.load(db, DB_FILE);
+
+    List.showAll(db->list);
+
+    data->id = 11;
+    list = DataBase.search(db, data, Data.equals, Data.compareId);
+    puts("");
+    List.showAll(list);
+
+    data->id = 1;
+    list = DataBase.search(db, data, Data.equals, Data.compareId);
+    puts("");
+    List.showAll(list);
+
+    data->id = 19;
+    list = DataBase.search(db, data, Data.equals, Data.compareId);
+    puts("");
+    List.showAll(list);
+
+    data->country = UK;
+    list = DataBase.search(db, data, Data.equals, Data.compareCountry);
+    puts("");
+    List.showAll(list);
+
+    data->yearBorn = 1900;
+    list = DataBase.search(db, data, Data.less, Data.compareBornDate);
+    puts("");
+    List.showAll(list);
+
+}
+
 void db_runAll(){
     Test.display("DataBase Test", BLUE_TEXT);
     db_login_test();
     db_load_test();
+    db_search_test();
 }

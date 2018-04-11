@@ -32,8 +32,19 @@ struct data_type Data = {
     .setId = data_setId,
     .setEmail = data_setEmail,
     .toString = data_toString,
+
+    .less = data_less,
+    .equals = data_equals,
+    .more = data_more,
+
+    .compareId = data_compareId,
     .compareBornDate = data_compareBornDate,
     .compareId = data_compareId,
+    .compareBornDate = data_compareBornDate,
+    .compareCountry = data_compareCountry,
+    .compareTravelClass = data_compareTravelClass,
+    .compareTravelFrequency = data_compareTravelFrequency,
+    .compareStayDuration = data_compareStayDuration,
     .counter = 0
 };
 
@@ -76,7 +87,7 @@ void data_setTravelData( struct data *this, int country, int travelClass, int tr
 }
 
 bool data_setId( struct data *this, int id ){
-    this->id = id;
+    this->id = id; // TODO: validation
 }
 
 bool data_setEmail( struct data *this, char* email ){
@@ -147,10 +158,39 @@ char* data_toString(struct data *this){
     return str;
 }
 
+bool data_less(struct data *d1, struct data *d2, DATA_COMPARATOR){
+    return compareData(d1, d2) < 0;
+}
+
+bool data_equals(struct data *d1, struct data *d2, DATA_COMPARATOR){
+    return compareData(d1, d2) == 0;
+}
+
+bool data_more(struct data *d1, struct data *d2, DATA_COMPARATOR){
+    return compareData(d1, d2) > 0;
+}
+
+
+int data_compareId(struct data *d1, struct data *d2){
+    return d1->id -d2->id;
+}
+
 int data_compareBornDate(struct data *d1, struct data *d2){
     return d1->yearBorn -d2->yearBorn;
 }
 
-int data_compareId(struct data *d1, struct data *d2){
-    return d1->id -d2->id;
+int data_compareCountry( struct data *d1, struct data *d2 ){
+    return d1->country -d2->country;
+}
+
+int data_compareTravelClass( struct data *d1, struct data *d2 ){
+    return d1->travelClass -d2->travelClass;
+}
+
+int data_compareTravelFrequency( struct data *d1, struct data *d2 ){
+    return d1->travelFrequency -d2->travelFrequency;
+}
+
+int data_compareStayDuration( struct data *d1, struct data *d2 ){
+    return d1->stayDuration -d2->stayDuration;
 }

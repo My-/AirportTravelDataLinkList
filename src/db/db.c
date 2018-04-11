@@ -60,21 +60,54 @@ struct data * db_getRecord( struct db *this, int id ){
     return NULL;
 }
 
-struct list * db_search( struct db *this, int machValue, FILTER ){
+// struct list * db_search( struct db *this, struct data *matchData, DATA_COMPARATOR ){
+//     struct list *R = List.empty();
+//     List.getFirst(this->list);        // reset current node to first node
+//     struct node **currentNode = &this->list->CURRENT_NODE;
+//     struct data *currentData = Node.getData(*currentNode);
+//
+//     if( compareData(currentData, matchData) == 0 ){
+//         List.addEnd(R, currentData);
+//     }
+//
+//     while( Node.hasNext(*currentNode) ){
+//         List.getNext(this->list);
+//         currentData = Node.getData(*currentNode);
+//
+//         // printf("%d - %d = %d\n",currentData->id, matchData->id, compareData(currentData, matchData));
+//
+//         if( compareData(currentData, matchData) == 0 ){
+//             List.addEnd(R, currentData);
+//         }
+//
+//     }
+//     // if list empty( no maches found) return NULL.
+//     return List.isEmpty(R) ? NULL : R;
+// }
+
+struct list * db_search( struct db *this, struct data *compareTo, DATA_PREDICATE, DATA_COMPARATOR ){
     struct list *R = List.empty();
     List.getFirst(this->list);        // reset current node to first node
-    struct node *currentNode = this->list->CURRENT_NODE;
-    struct data *currentData;
+    struct node **currentNode = &this->list->CURRENT_NODE;
+    struct data *currentData = Node.getData(*currentNode);
 
-    while( Node.hasNext(currentNode) ){
-        currentData = Node.getData(currentNode);
-
-        if( Filter.on(currentData, machValue, filter) ){
-            List.addEnd(R, currentData);
-        }
+    if( predicateData(currentData, compareTo, compareData) ){
+        List.addEnd(R, currentData);
     }
 
-    return R;
+    while( Node.hasNext(*currentNode) ){
+        List.getNext(this->list);
+        currentData = Node.getData(*currentNode);
+
+        // printf("%d - %d = %d\n",currentData->id, compareTo->id, compareData(currentData, compareTo));
+
+        if( predicateData(currentData, compareTo, compareData) ){
+            List.addEnd(R, currentData);
+        }
+
+    }
+    // if list empty( no maches found) return NULL.
+    return List.isEmpty(R) ? NULL : R;
 }
 
 bool db_save( struct db *this, char *fileName ){

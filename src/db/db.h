@@ -23,11 +23,13 @@ bool db_login( struct db *this, char *username, char *password );
 bool db_addRecord( struct db *this, struct data *data );
 bool db_removeRecord(struct db *this, int id );
 struct data * db_getRecord( struct db *this, int id );
-struct list * db_search( struct db *this, int machValue, FILTER );
+// struct list * db_search( struct db *this, struct data *matchData, DATA_COMPARATOR );
+struct list * db_search( struct db *this, struct data *matchData, DATA_PREDICATE, DATA_COMPARATOR );
 bool db_save( struct db *this, char *fileName );
 bool db_load( struct db *this, char *fileName );
 void db_showAll( struct db *this );
 // void db_display( struct db *this, COMPARATOR_DATA ); // use List.showAll( DB.search( filter ) )
+
 
 // void adminLogin();
 
@@ -37,7 +39,8 @@ extern struct db_type {
     bool (*addRecord)( struct db *this, struct data *data );
     bool (*removeRecord)(struct db *this, int id );
     struct data * (*getRecord)( struct db *this, int id );
-    struct list * (*search)( struct db *this, int machValue, FILTER );
+    // struct list * (*search)( struct db *this, struct data *matchData, DATA_COMPARATOR );
+    struct list * (*search)( struct db *this, struct data *matchData, DATA_PREDICATE, DATA_COMPARATOR );
     bool (*save)( struct db *this, char *fileName );
     bool (*load)( struct db *this, char *fileName );
     void (*showAll)( struct db *this );

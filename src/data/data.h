@@ -17,6 +17,13 @@
 #include <string.h>     // string
 
 #define DATA_COMPARATOR int(*compareData)(struct data*, struct data*)
+#define DATA_PREDICATE bool (*predicateData)(struct data*, struct data*, DATA_COMPARATOR)
+// #define DATA_LESS           \
+//     DATA_PREDICATE(struct data *d1, struct data *d2, DATA_COMPARATOR){     \
+//         return DATA_COMPARATOR < 0;     \
+//     }
+#define DATA_EQUAL bool (*predicateData)(struct data*, struct data*)
+#define DATA_MORE bool (*predicateData)(struct data*, struct data*)
 
 // https://stackoverflow.com/a/2181941/5322506
 typedef enum{ NO_COUNTRY, UK, EUROPE, ASIA, AMERICAS, AUSTRALIA, SIZE_COUNTIES }Countries;
@@ -28,10 +35,10 @@ typedef enum{ NO_STAY_DURATION, ONE_DAY, LESS_3_DAYS, LESS_7_DAYS, MORE_7_DAYS, 
 *   It's like enum .toString() method.
 *       https://stackoverflow.com/a/2161797/5322506
 */
-static char *country_toStr[] = { "United Kingdom", "Rest Europe", "Asia", "Americas", "Australia" };
-static char *travelClass_toStr[] = { "Economy class", "Premium class", "Business class", "First class" };
-static char *travelFrequency_toStr[] = { "less then 3 times", "less then 5 times", "more than 5 times" };
-static char *stayDuration_toStr[] = { "1 day", "3 and less days", "7 and less days", "more than 7 days" };
+static char *country_toStr[] = { "invalid data", "United Kingdom", "Rest Europe", "Asia", "Americas", "Australia" };
+static char *travelClass_toStr[] = { "invalid data", "Economy class", "Premium class", "Business class", "First class" };
+static char *travelFrequency_toStr[] = { "invalid data", "less then 3 times", "less then 5 times", "more than 5 times" };
+static char *stayDuration_toStr[] = { "invalid data", "1 day", "3 and less days", "7 and less days", "more than 7 days" };
 
 // function prototype
 bool isEmailValid( char *email );
@@ -60,8 +67,17 @@ bool data_setId( struct data *this, int id );
 bool data_setEmail( struct data *this, char* email );
 char* data_toString( struct data *this );
 
-int data_compareBornDate( struct data *n1, struct data *n2 );
+bool data_less( struct data *d1, struct data *d2, DATA_COMPARATOR );
+bool data_equals( struct data *d1, struct data *d2, DATA_COMPARATOR );
+bool data_more( struct data *d1, struct data *d2, DATA_COMPARATOR );
+
 int data_compareId( struct data* n1, struct data* n2 );
+int data_compareBornDate( struct data *n1, struct data *n2 );
+int data_compareCountry( struct data *n1, struct data *n2 );
+int data_compareTravelClass( struct data *n1, struct data *n2 );
+int data_compareTravelFrequency( struct data *n1, struct data *n2 );
+int data_compareStayDuration( struct data *n1, struct data *n2 );
+
 
 /*** "Class" static fields (methods, class variables) ***/
 extern struct data_type {
@@ -73,8 +89,16 @@ extern struct data_type {
     bool (*setEmail)( struct data *this, char* email );
     char * (*toString)( struct data *this );
 
-    int (*compareBornDate)( struct data *n1, struct data *n2 );
+    bool (*less)( struct data *d1, struct data *d2, DATA_COMPARATOR );
+    bool (*equals)( struct data *d1, struct data *d2, DATA_COMPARATOR );
+    bool (*more)( struct data *d1, struct data *d2, DATA_COMPARATOR );
+
     int (*compareId)( struct data* n1, struct data* n2 );
+    int (*compareBornDate)( struct data *n1, struct data *n2 );
+    int (*compareCountry)( struct data *n1, struct data *n2 );
+    int (*compareTravelClass)( struct data *n1, struct data *n2 );
+    int (*compareTravelFrequency)( struct data *n1, struct data *n2 );
+    int (*compareStayDuration)( struct data *n1, struct data *n2 );
     int counter;
 } Data; // <-- it's like a "class" name
 

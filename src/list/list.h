@@ -43,6 +43,7 @@ bool list_insertUnique( struct list *this, struct data *data, DATA_COMPARATOR );
 void list_sort( struct list *this, DATA_COMPARATOR );
 int list_size( struct list *this );
 void list_showAll( struct list *this );
+bool list_isEmpty( struct list *this );
 
 extern struct list_type {
     struct list * (*empty)(void);
@@ -60,6 +61,7 @@ extern struct list_type {
     void (*sort)( struct list *this, DATA_COMPARATOR );
     int (*size)(struct list * this);
     void (*showAll)( struct list *this );
+    bool (*isEmpty)( struct list *this );
 } List;
 
 

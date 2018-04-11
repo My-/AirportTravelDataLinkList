@@ -3,7 +3,7 @@
 #include "filter.h"
 // #include "../data/data.c" // need it to suport Data "class"
 
-
+int _idToLookFor = 0;
 
 // Filter "class"
 struct filter Filter = {
@@ -11,7 +11,8 @@ struct filter Filter = {
     .travelFrom = filter_travelFrom,
     .travelClass = filter_travelClass,
     .travelFrequency = filter_travelFrequency,
-    .stayDuration = filter_stayDuration
+    .stayDuration = filter_stayDuration,
+    .id = filter_id
 };
 
 
@@ -102,4 +103,15 @@ bool (*filter_stayDuration(int duration))(struct data*){
         default: filter = filterFalse;  // if not from list return false
     }
     return filter;
+}
+
+// id filter helpers
+bool filterOnId(struct data* data){
+    return data->id == _idToLookFor;
+}
+
+//id filter factory
+bool (*filter_id(int id))(struct data* data){
+    _idToLookFor = id;
+    return filterOnId;
 }
