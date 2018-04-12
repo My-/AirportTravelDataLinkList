@@ -23,7 +23,12 @@ int main() {
     // char * adminName = adminLogin();
     char * adminName = "adminLogin()";
     puts(adminName);
+
     struct db * db = DataBase.empty();
+    if( !DataBase.load(db, DB_FILE) ){
+        puts("No previous Data Base records found!");
+    }
+
     Menu.main(db);
 
 

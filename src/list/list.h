@@ -44,6 +44,8 @@ void list_sort( struct list *this, DATA_COMPARATOR );
 int list_size( struct list *this );
 void list_showAll( struct list *this );
 bool list_isEmpty( struct list *this );
+struct list * list_search( struct list *this, struct data *matchData, DATA_PREDICATE, DATA_COMPARATOR );
+
 
 extern struct list_type {
     struct list * (*empty)(void);
@@ -62,6 +64,7 @@ extern struct list_type {
     int (*size)(struct list * this);
     void (*showAll)( struct list *this );
     bool (*isEmpty)( struct list *this );
+    struct list * (*search)( struct list *this, struct data *matchData, DATA_PREDICATE, DATA_COMPARATOR );
 } List;
 
 

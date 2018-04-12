@@ -21,7 +21,8 @@ struct list_type List = {
     .sort = list_sort,
     .size = list_size,
     .showAll = list_showAll,
-    .isEmpty = list_isEmpty
+    .isEmpty = list_isEmpty,
+    .search = list_search
 };
 
 
@@ -191,6 +192,11 @@ bool list_insertAfter( struct list *this, struct data *data ){ // TODO: remove r
 }
 
 bool list_insertUnique( struct list *this, struct data *data, DATA_COMPARATOR ){
+    if( List.isEmpty(this) ){
+        List.addFront(this, data);
+        return true;
+    }
+
     // List.getFirst(this);
     if( compareData(data, List.getFirst(this)) < 0 ){    // resets current to first position
         // puts("to front");
@@ -245,4 +251,29 @@ void list_showAll( struct list *this ){
 bool list_isEmpty( struct list *this ){
     if( this == NULL ){ return true; }
     return this->FIRST_NODE == NULL;
+}
+
+struct list * list_search( struct list *this, struct data *compareTo, DATA_PREDICATE, DATA_COMPARATOR ){
+    struct list *R = List.empty();
+    List.getFirst(this);        // reset current node to first node
+    struct node **currentNode = &this->CURRENT_NODE;
+    struct data *currentData = Node.getData(*currentNode);
+
+    if( predicateData(currentData, compareTo, compareData) ){
+        List.addEnd(R, currentData);
+    }
+
+    while( Node.hasNext(*currentNode) ){
+        List.getNext(this);
+        currentData = Node.getData(*currentNode);
+
+        // printf("%d - %d = %d\n",currentData->id, compareTo->id, compareData(currentData, compareTo));
+
+        if( predicateData(currentData, compareTo, compareData) ){
+            List.addEnd(R, currentData);
+        }
+
+    }
+    // if list empty( no maches found) return NULL.
+    return List.isEmpty(R) ? NULL : R;
 }
