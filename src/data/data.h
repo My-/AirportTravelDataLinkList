@@ -41,7 +41,7 @@ static char *travelFrequency_toStr[] = { "invalid data", "less then 3 times", "l
 static char *stayDuration_toStr[] = { "invalid data", "1 day", "3 and less days", "7 and less days", "more than 7 days" };
 
 // function prototype
-bool isEmailValid( char *email );
+bool isEmailValid( const char *email );
 
 // "class" instance fields
 struct data {
@@ -64,7 +64,7 @@ struct data * data_of(int id, char *name, char *surname, int yearBorn, char *ema
 void data_setTravelData(struct data *this, int country, int travelClass, int travelFrequency, int stayDuration);
 bool data_remove( struct data *this);
 bool data_setId( struct data *this, int id );
-bool data_setEmail( struct data *this, char* email );
+bool data_setEmail( struct data *this, const char* email );
 char* data_toString( struct data *this );
 
 bool data_less( struct data *d1, struct data *d2, DATA_COMPARATOR );
@@ -86,7 +86,7 @@ extern struct data_type {
     void (*setTravelData)(struct data *this, int country, int travelClass, int travelFrequency, int stayDuration);
     bool (*remove)( struct data *this );
     bool (*setId)( struct data *this, int id );
-    bool (*setEmail)( struct data *this, char* email );
+    bool (*setEmail)( struct data *this, const char* email );
     char * (*toString)( struct data *this );
 
     bool (*less)( struct data *d1, struct data *d2, DATA_COMPARATOR );

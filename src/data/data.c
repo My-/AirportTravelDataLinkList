@@ -2,7 +2,7 @@
 
 
 
-bool isEmailValid( char *email ){
+bool isEmailValid( const char *email ){
     char * tail = strchr(email, '@');
     if( !tail ){ return false; }
     int tailLen = strlen(tail);
@@ -90,9 +90,10 @@ bool data_setId( struct data *this, int id ){
     this->id = id; // TODO: validation
 }
 
-bool data_setEmail( struct data *this, char* email ){
+bool data_setEmail( struct data *this, const char* email ){
     if( isEmailValid(email) ){
-        this->email = email;
+        this->email = (char*)malloc(sizeof(char)*strlen(email));
+        memcpy(this->email, email, strlen(email) +1);
         return true;
     }
     return false;
