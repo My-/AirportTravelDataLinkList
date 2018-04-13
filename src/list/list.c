@@ -236,7 +236,8 @@ int list_size(struct list * this){ return this->size; }
 
 void list_showAll( struct list *this ){
     int index = 0;
-    if( !this ){ puts("NULL list."); return; }
+    // puts(" here");
+    if( List.isEmpty(this) ){ puts("NULL list."); return; }
     struct data* data = List.getFirst(this);
     printf("[%d]: %-4d %-10s %-10s %5d %15s %2d %2d %2d %2d\n",index, data->id, data->name, data->surname, data->yearBorn, data->email, data->country, data->travelClass, data->travelFrequency, data->stayDuration);
 
