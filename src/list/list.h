@@ -22,7 +22,7 @@
 struct list {
     struct node * FIRST_NODE;
     // struct node * PREV_NODE;
-    struct node * CURRENT_NODE;
+    struct node * CURRENT_NODE; // pointer to the node whitch is used for selecting node we work on
     struct node * LAST_NODE;
     int size;
     struct list_type * _it;
