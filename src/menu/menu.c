@@ -15,7 +15,7 @@ struct menu Menu = {
 void menu_main(struct db *db){
     int choice;
     do{
-        puts("=======================================");
+        puts("\n=======================================");
         puts("=     Main                            =");
         puts("=======================================");
         puts("[1] - Add passenger.");
@@ -37,7 +37,7 @@ void menu_main(struct db *db){
                 puts("=     All Records in DB               =");
                 puts("=======================================");
                 DataBase.showAll(db);
-                puts("\n")
+                puts("\n");
                 break;
             case 3: Menu.showOne(db); break;
             case 4: Menu.updateRecord(db); break;
@@ -69,6 +69,26 @@ int getId(struct db *db){       //TODO: show note if id exist
 
     return choice;
 }
+
+/* Name */
+void enterString(char ** str){
+    char tmpstr[30];
+    scanf("%s", tmpstr);
+    *str = (char*)malloc(sizeof(char)*strlen(tmpstr));
+    memcpy(*str, tmpstr, strlen(tmpstr) +1);
+}
+
+/* Email */
+void setEmail(struct data** data){
+    char tmpstr[30];
+    char * str;
+
+    do{
+        puts("\tEmail: ");
+        scanf("%s", tmpstr);
+    }while( !Data.setEmail(*data, tmpstr) );
+}
+
 
 /* Pick Country */
 int getCountry(){
@@ -137,33 +157,14 @@ void menu_addRecord(struct db* db){
     int choice;
 
     puts("Enter passenger details:");
-
     data->id = getId(db); // set id
-
-    /* Name */
     puts("\tName: ");
-    scanf("%s", str);
-    data->name = (char*)malloc(sizeof(char)*strlen(str));
-    memcpy(data->name, str, strlen(str) +1);
-
-    /* Surname */
+    enterString(&data->name);
     puts("\tSurname: ");
-    scanf("%s", str);
-    data->surname = (char*)malloc(sizeof(char)*strlen(str));
-    memcpy(data->surname, str, strlen(str) +1);
-
-    /* Year Born */
+    enterString(&data->surname);
     puts("\tYear born: ");
     scanf("%d", &data->yearBorn);
-
-    /* Email */
-    do{
-        puts("\tEmail: ");
-        scanf("%s", str);
-    }while( !Data.setEmail(data, str) );
-    data->email = (char*)malloc(sizeof(char)*strlen(str));
-    memcpy(data->email, str, strlen(str) +1);
-
+    setEmail(&data);
     data->country = getCountry();
     data->travelClass = getTravelClass();
     data->travelFrequency = getTravelFrequency();
@@ -204,13 +205,43 @@ void menu_showOne(struct db* db){
     if( result ){ free(result); }
 }
 
+void changeDetails(struct data**  data){
+    int subchoice;
+
+    do{
+        puts("\nChange: ");
+        puts("\t[1] - Surname.");
+        puts("\t[2] - Email.");
+        puts("\t[3] - Country.");
+        puts("\t[4] - Travel Class.");
+        puts("\t[4] - Travel Frequency.");
+        puts("\t[4] - Stay Duration.");
+        puts("---------------------------------------");
+        puts("\t[0] - Back.\n");
+        scanf("%d", &subchoice);
+        switch (subchoice) {
+            case 1:
+                puts("\tSurname: ");
+                enterString(&((*data)->surname));
+                break;
+            case 2:
+                setEmail(data);
+                break;
+            case 3: (*data)->country = getCountry(); break;
+            case 4: (*data)->travelClass = getTravelClass(); break;
+            case 5: (*data)->travelFrequency = getTravelFrequency(); break;
+            case 6: (*data)->stayDuration = getStayDuration(); break;
+        }
+    }while( subchoice );
+}
+
 void menu_updateRecord(struct db* db){
     int choice;
     struct data * tmpData = Data.empty();
     struct list* result;
     do{
         puts("=======================================");
-        puts("=     Show One                        =");
+        puts("=     Update Record                   =");
         puts("=======================================");
         puts("\nEnter ID ([0] - to exit):");
         scanf("%d", &choice);
@@ -218,13 +249,14 @@ void menu_updateRecord(struct db* db){
         result = DataBase.search(db, tmpData, Data.equals, Data.compareId);
 
         if( List.isEmpty(result) ){
-            puts("No match found!");
+            puts("No match found! List is empty.");
         }
         else if( List.size(result) > 1 ){       // probably I should create log and brake program here.
-            puts("ERROR! found more then one!");
+            puts("ERROR! found more then one! Dublicate ID");
         }
         else{
-                //TODO: finis it
+            struct data *data = List.getFirst(result);
+            changeDetails(&data);
         }
 
     }while( choice );
@@ -236,85 +268,146 @@ void menu_updateRecord(struct db* db){
 
 void menu_deleteRecord(struct db* db){
     puts("TODO:"); // TODO:
+
+
 }
 
-void menu_statistics(struct db* db){
-    puts("=======================================");
-    puts("=     Statistics                      =");
-    puts("=======================================");
-}
-
-void menu_report(struct db* db){
-    puts("=======================================");
-    puts("=     Report                          =");
-    puts("=======================================");
-    puts("[1] - Travel Class");
-    puts("[2] - Born Before 1980");
+struct list * choiceOne(struct db *db){
     int choice;
-    float matches, size = List.size(db->list);
-    struct list *tmpListOne;
-    struct list *tmpListTwo;
+    struct list *list = List.empty();
     struct data *tmpData = Data.empty();
 
+
     do{
+        puts("[1] - Travel Class");
+        puts("[2] - Born Before 1980\n");
         puts("Enter choice:");
         scanf("%d", &choice);
 
         switch( choice ){
             case 1:
                 tmpData->travelClass = getTravelClass();
-                tmpListOne = DataBase.search(db, tmpData, Data.equals, Data.compareTravelClass);
+                list = DataBase.search(db, tmpData, Data.equals, Data.compareTravelClass);
+                // printf("Trvel %s and ", travelClass_toStr[tmpData->travelClass]);
                 break;
             case 2:
-                tmpData->yearBorns = 1980;
-                tmpListOne = DataBase.search(db, tmpData, Data.less, Data.compareBornDate);
+                tmpData->yearBorn = 1980;
+                list = DataBase.search(db, tmpData, Data.less, Data.compareBornDate);
+                // printf("Born before %d and ", tmpData->yearBorn);
                 break;
             default:
                 puts("Wrong choice! Try again.");
         }
     }while( choice < 1 || 2 < choice );
 
-    puts("[A] - % of passengers who travel from the UK");
-    puts("[B] - % of passengers who travel from the Rest of Europe");
-    puts("[C] - % of passengers who travel from the Asia");
-    puts("[D] - % of passengers who travel from the Americas");
-    puts("[E] - % of passengers who travel from the Australasia");
-    puts("[F] - % of passengers who spent on average one day in Ireland");
-    puts("[G] - % of passengers who spent on average less than 3 days in Ireland");
-    puts("[H] - % of passengers who spent on average less than 7 days in Ireland");
-    puts("[I] - % of passengers who spent on average more than 7 days in Ireland");
-    char subchoice;
+    free(tmpData);
+    // List.showAll(list);
+    return list;
+}
+
+int choiceTwo(){
+    puts("[1] - % of passengers who travel from the UK");
+    puts("[2] - % of passengers who travel from the Rest of Europe");
+    puts("[3] - % of passengers who travel from the Asia");
+    puts("[4] - % of passengers who travel from the Americas");
+    puts("[5] - % of passengers who travel from the Australasia");
+    puts("[6] - % of passengers who spent on average one day in Ireland");
+    puts("[7] - % of passengers who spent on average less than 3 days in Ireland");
+    puts("[8] - % of passengers who spent on average less than 7 days in Ireland");
+    puts("[9] - % of passengers who spent on average more than 7 days in Ireland");
+    int subchoice;
     do{
         puts("Enter choice:");
-        scanf("%c", &subchoice);
+        scanf("%d", &subchoice);
+    }while( subchoice < 1 || 9 < subchoice );
 
-        Countries country = (subchoice -'A') %5 +1;
-        StayDuration stay = (subchoice -'A') %4 +1;
+    return subchoice;
+}
 
-        switch( subchoice ){
-            case 'A':
-            case 'B':
-            case 'C':
-            case 'D':
-            case 'E':
-                tmpData->country = country;
-                tmpListTwo = List.search(tmpListOne, tmpData, Data.equals, Data.compareCountry);
-                matches = size / List.size(tmpListTwo);
-                printf("Passengers travel from %s is %.0f percent.", country_toStr[country], matches);
-                break;
-            case 'F':
-            case 'G':
-            case 'H':
-            case 'I':
-                tmpData->stayDuration = stay;
-                tmpList = DataBase.search(db, tmpData, Data.equals, Data.compareStayDuration);
-                matches = List.size(tmpList);
-                printf("Passengers stayed %s is %.0f percent.", stayDuration_toStr[stay], matches);
-                break;
-            default:
-                puts("Wrong choice! Try again.");
-        }
-    }while( choice < 1 || 2 < choice );
+void menu_statistics(struct db* db){
+    float matches = 0.0f, size = List.size(db->list);
+    struct list *tmpListOne, *tmpListTwo = List.empty();
+    struct data *tmpData = Data.empty();
+
+    puts("=======================================");
+    puts("=     Statistics                      =");
+    puts("=======================================");
+
+    tmpListOne = choiceOne(db);
+
+    int subchoice = choiceTwo();
+    Countries country = subchoice;
+    StayDuration stay = subchoice -5;
+
+    switch( subchoice ){
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+            tmpData->country = country;
+            tmpListTwo = List.search(tmpListOne, tmpData, Data.equals, Data.compareCountry);
+            if( !List.isEmpty(tmpListTwo) ){ matches = List.size(tmpListTwo) * 100 / size; }
+            printf("Passengers travel from %s is %.1f percent.\n", country_toStr[country], matches);
+            break;
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+            tmpData->stayDuration = stay;
+            tmpListTwo = List.search(tmpListOne, tmpData, Data.equals, Data.compareStayDuration);
+            if( !List.isEmpty(tmpListTwo) ){ matches = List.size(tmpListTwo) * 100 / size; }
+            printf("Passengers stayed %s is %.1f percent.\n", stayDuration_toStr[stay], matches);
+            break;
+        default:
+            puts("Wrong choice! Try again.");
+    }
+
+    // List.showAll(tmpListTwo);
+    // TODO: save to report file
+
+    free(tmpListOne);
+    free(tmpListTwo);
+    free(tmpData);
+}
+
+void menu_report(struct db* db){
+    struct list *tmpListOne, *tmpListTwo = List.empty();
+    struct data *tmpData = Data.empty();
+
+    puts("=======================================");
+    puts("=     Report                          =");
+    puts("=======================================");
+
+    tmpListOne = choiceOne(db);
+
+    int subchoice = choiceTwo();
+    Countries country = subchoice;
+    StayDuration stay = subchoice -5;
+
+    switch( subchoice ){
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+            tmpData->country = country;
+            tmpListTwo = List.search(tmpListOne, tmpData, Data.equals, Data.compareCountry);
+            if( !List.isEmpty(tmpListTwo) ){ List.showAll(tmpListTwo); }
+            break;
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+            tmpData->stayDuration = stay;
+            tmpListTwo = List.search(tmpListOne, tmpData, Data.equals, Data.compareStayDuration);
+            if( !List.isEmpty(tmpListTwo) ){ List.showAll(tmpListTwo); }
+            break;
+        default:
+            puts("Wrong choice! Try again.");
+    }
+
+    // List.showAll(tmpListTwo);
 
     free(tmpListOne);
     free(tmpListTwo);
@@ -323,9 +416,9 @@ void menu_report(struct db* db){
 
 void menu_listOrdered(struct db* db){
     puts("=======================================");
-    puts("=     Ordered Records                 =");
+    puts("=     Sort Records                    =");
     puts("=======================================");
-    puts("Order by:")
+    puts("Order by:");
     puts("\t[1] - id");
     // puts("\t[2] - name");            // TODO: string comparison
     // puts("\t[3] - surname");
@@ -337,24 +430,24 @@ void menu_listOrdered(struct db* db){
     puts("\t[9] - stayDuration");
     puts("---------------------------------------");
     puts("[0] - Back.\n");
-    puts("NOTE: modifys DB records");
     int choice;
     do{
+        puts("NOTE: modifys DB records");
         puts("Enter choice:");
         scanf("%d", &choice);
 
         switch( choice ){
-            case 1: List.sort(db->list, Data.compareId); break;
-            // case 2: List.sort(db->list, Data.compareName); break;
-            // case 3: List.sort(db->list, Data.compareSurname); break;
-            case 4: List.sort(db->list, Data.compareBornDate); break;
-            // case 5: List.sort(db->list, Data.compareEmail); break;
-            case 6: List.sort(db->list, Data.compareCountry); break;
-            case 7: List.sort(db->list, Data.compareTravelClass); break;
-            case 8: List.sort(db->list, Data.compareTravelFrequency); break;
-            case 9: List.sort(db->list, Data.compareStayDuration); break;
+            case 1: List.sort(db->list, Data.compareId); puts("...done"); break;
+            // case 2: List.sort(db->list, Data.compareName); puts("...done"); break;
+            // case 3: List.sort(db->list, Data.compareSurname); puts("...done"); break;
+            case 4: List.sort(db->list, Data.compareBornDate); puts("...done"); break;
+            // case 5: List.sort(db->list, Data.compareEmail); puts("...done"); break;
+            case 6: List.sort(db->list, Data.compareCountry); puts("...done"); break;
+            case 7: List.sort(db->list, Data.compareTravelClass); puts("...done"); break;
+            case 8: List.sort(db->list, Data.compareTravelFrequency); puts("...done"); break;
+            case 9: List.sort(db->list, Data.compareStayDuration); puts("...done"); break;
             default:
                 puts("Wrong choice! Try again.");
         }
-    }while( choice ); // TODO: add note about this stile
+    }while( choice );
 }
