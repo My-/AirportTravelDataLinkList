@@ -46,32 +46,38 @@ void db_search_test(){
     struct db *db = DataBase.empty();
     DataBase.load(db, DB_FILE);
 
-    List.showAll(db->list);
+    // List.showAll(db->list);
 
     data->id = 11;
     list = DataBase.search(db, data, Data.equals, Data.compareId);
-    puts("");
-    List.showAll(list);
+    Test.assertEqual_Int(data->id, List.getFirst(list)->id, "search");
+    // puts("");
+    // List.showAll(list);
 
     data->id = 1;
     list = DataBase.search(db, data, Data.equals, Data.compareId);
-    puts("");
-    List.showAll(list);
+    Test.assertEqual_Int(data->id, List.getFirst(list)->id, "search");
+
+    // puts("");
+    // List.showAll(list);
 
     data->id = 19;
     list = DataBase.search(db, data, Data.equals, Data.compareId);
-    puts("");
-    List.showAll(list);
+    Test.assertEqual_Int(data->id, List.getFirst(list)->id, "search");
+    // puts("");
+    // List.showAll(list);
 
     data->country = UK;
     list = DataBase.search(db, data, Data.equals, Data.compareCountry);
-    puts("");
-    List.showAll(list);
+    Test.assertEqual_Int(4, List.size(list), "search");
+    // puts("");
+    // List.showAll(list);
 
     data->yearBorn = 1900;
     list = DataBase.search(db, data, Data.less, Data.compareBornDate);
-    puts("");
-    List.showAll(list);
+    Test.assertEqual_Int(4, List.size(list), "search");
+    // puts("");
+    // List.showAll(list);
 
 }
 
