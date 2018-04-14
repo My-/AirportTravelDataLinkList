@@ -23,9 +23,9 @@ void menu_main(struct db *db){
         puts("[3] - Display one passenger details.");
         puts("[4] - Update passenger details.");
         puts("[5] - Delate passenger.");
-        puts("[6] - Generate statistic.");
-        puts("[7] - Report.");
-        puts("[8] - List all the passenger of the...");
+        puts("[6] - Generate statistic...");
+        puts("[7] - Report...");
+        puts("[8] - List all the passengers from UK (sort)...");
         puts("---------------------------------------");
         puts("[0] - Back.");
         puts("");
@@ -415,39 +415,47 @@ void menu_report(struct db* db){
 }
 
 void menu_listOrdered(struct db* db){
+    int choice;
+    struct data *tmpData = Data.empty();
+    tmpData->country = UK;
+    struct list *tmpList = List.search(db->list, tmpData, Data.equals, Data.compareCountry);
+    free(tmpData);
+
     puts("=======================================");
     puts("=     Sort Records                    =");
     puts("=======================================");
-    puts("Order by:");
+    puts("Sort by:");
     puts("\t[1] - id");
-    // puts("\t[2] - name");            // TODO: string comparison
-    // puts("\t[3] - surname");
+    puts("\t[2] - name");
+    puts("\t[3] - surname");
     puts("\t[4] - yearBorn");
-    // puts("\t[5] - email");
+    puts("\t[5] - email");
     puts("\t[6] - country");
     puts("\t[7] - travelClass");
     puts("\t[8] - travelFrequency");
     puts("\t[9] - stayDuration");
     puts("---------------------------------------");
     puts("[0] - Back.\n");
-    int choice;
+
     do{
-        puts("NOTE: modifys DB records");
         puts("Enter choice:");
         scanf("%d", &choice);
 
         switch( choice ){
-            case 1: List.sort(db->list, Data.compareId); puts("...done"); break;
-            // case 2: List.sort(db->list, Data.compareName); puts("...done"); break;
-            // case 3: List.sort(db->list, Data.compareSurname); puts("...done"); break;
-            case 4: List.sort(db->list, Data.compareBornDate); puts("...done"); break;
-            // case 5: List.sort(db->list, Data.compareEmail); puts("...done"); break;
-            case 6: List.sort(db->list, Data.compareCountry); puts("...done"); break;
-            case 7: List.sort(db->list, Data.compareTravelClass); puts("...done"); break;
-            case 8: List.sort(db->list, Data.compareTravelFrequency); puts("...done"); break;
-            case 9: List.sort(db->list, Data.compareStayDuration); puts("...done"); break;
+            case 1: List.sort(tmpList, Data.compareId);            puts("...done"); break;
+            case 2: List.sort(tmpList, Data.compareName);          puts("...done"); break;
+            case 3: List.sort(tmpList, Data.compareSurname);       puts("...done"); break;
+            case 4: List.sort(tmpList, Data.compareBornDate);      puts("...done"); break;
+            case 5: List.sort(tmpList, Data.compareEmail);         puts("...done"); break;
+            case 6: List.sort(tmpList, Data.compareCountry);       puts("...done"); break;
+            case 7: List.sort(tmpList, Data.compareTravelClass);   puts("...done"); break;
+            case 8: List.sort(tmpList, Data.compareTravelFrequency); puts("...done"); break;
+            case 9: List.sort(tmpList, Data.compareStayDuration); puts("...done"); break;
             default:
                 puts("Wrong choice! Try again.");
         }
+        if( !List.isEmpty(tmpList) ){ List.showAll(tmpList); }
     }while( choice );
+
+    if( !List.isEmpty(tmpList) ){ free(tmpList); }
 }
