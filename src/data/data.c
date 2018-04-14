@@ -38,7 +38,10 @@ struct data_type Data = {
     .more = data_more,
 
     .compareId = data_compareId,
+    .compareName = data_compareName,
+    .compareSurname = data_compareSurname,
     .compareBornDate = data_compareBornDate,
+    .compareEmail = data_compareEmail,
     .compareId = data_compareId,
     .compareBornDate = data_compareBornDate,
     .compareCountry = data_compareCountry,
@@ -159,39 +162,42 @@ char* data_toString(struct data *this){
     return str;
 }
 
+/* Logical Operators */
 bool data_less(struct data *d1, struct data *d2, DATA_COMPARATOR){
     return compareData(d1, d2) < 0;
 }
-
 bool data_equals(struct data *d1, struct data *d2, DATA_COMPARATOR){
     return compareData(d1, d2) == 0;
 }
-
 bool data_more(struct data *d1, struct data *d2, DATA_COMPARATOR){
     return compareData(d1, d2) > 0;
 }
 
-
+/* Comparators */
 int data_compareId(struct data *d1, struct data *d2){
     return d1->id -d2->id;
 }
-
+int data_compareName( struct data *n1, struct data *n2 ){
+    return strcmp(n1->name, n2->name);
+}
+int data_compareSurname( struct data *n1, struct data *n2 ){
+    return strcmp(n1->surname, n2->surname);
+}
 int data_compareBornDate(struct data *d1, struct data *d2){
     return d1->yearBorn -d2->yearBorn;
 }
-
+int data_compareEmail( struct data *n1, struct data *n2 ){
+    return strcmp(n1->email, n2->email);
+}
 int data_compareCountry( struct data *d1, struct data *d2 ){
     return d1->country -d2->country;
 }
-
 int data_compareTravelClass( struct data *d1, struct data *d2 ){
     return d1->travelClass -d2->travelClass;
 }
-
 int data_compareTravelFrequency( struct data *d1, struct data *d2 ){
     return d1->travelFrequency -d2->travelFrequency;
 }
-
 int data_compareStayDuration( struct data *d1, struct data *d2 ){
     return d1->stayDuration -d2->stayDuration;
 }

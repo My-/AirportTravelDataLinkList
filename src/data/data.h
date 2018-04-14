@@ -72,7 +72,10 @@ bool data_equals( struct data *d1, struct data *d2, DATA_COMPARATOR );
 bool data_more( struct data *d1, struct data *d2, DATA_COMPARATOR );
 
 int data_compareId( struct data* n1, struct data* n2 );
+int data_compareName( struct data *n1, struct data *n2 );
+int data_compareSurname( struct data *n1, struct data *n2 );
 int data_compareBornDate( struct data *n1, struct data *n2 );
+int data_compareEmail( struct data *n1, struct data *n2 );
 int data_compareCountry( struct data *n1, struct data *n2 );
 int data_compareTravelClass( struct data *n1, struct data *n2 );
 int data_compareTravelFrequency( struct data *n1, struct data *n2 );
@@ -94,7 +97,10 @@ extern struct data_type {
     bool (*more)( struct data *d1, struct data *d2, DATA_COMPARATOR );
 
     int (*compareId)( struct data* n1, struct data* n2 );
+    int (*compareName)( struct data *n1, struct data *n2 );
+    int (*compareSurname)( struct data *n1, struct data *n2 );
     int (*compareBornDate)( struct data *n1, struct data *n2 );
+    int (*compareEmail)( struct data *n1, struct data *n2 );
     int (*compareCountry)( struct data *n1, struct data *n2 );
     int (*compareTravelClass)( struct data *n1, struct data *n2 );
     int (*compareTravelFrequency)( struct data *n1, struct data *n2 );
