@@ -18,12 +18,13 @@
 
 #define DATA_COMPARATOR int(*compareData)(struct data*, struct data*)
 #define DATA_PREDICATE bool (*predicateData)(struct data*, struct data*, DATA_COMPARATOR)
+#define DATA_STRINGIFY char*(*stringify)(struct data*)
 // #define DATA_LESS           \
 //     DATA_PREDICATE(struct data *d1, struct data *d2, DATA_COMPARATOR){     \
 //         return DATA_COMPARATOR < 0;     \
 //     }
-#define DATA_EQUAL bool (*predicateData)(struct data*, struct data*)
-#define DATA_MORE bool (*predicateData)(struct data*, struct data*)
+// #define DATA_EQUAL bool (*predicateData)(struct data*, struct data*)
+// #define DATA_MORE bool (*predicateData)(struct data*, struct data*)
 
 // https://stackoverflow.com/a/2181941/5322506
 typedef enum{ NO_COUNTRY, UK, EUROPE, ASIA, AMERICAS, AUSTRALIA, SIZE_COUNTIES }Countries;
@@ -66,6 +67,10 @@ bool data_remove( struct data *this);
 bool data_setId( struct data *this, int id );
 bool data_setEmail( struct data *this, const char* email );
 char* data_toString( struct data *this );
+char* data_toInfo( struct data *this );
+char* data_toJSON( struct data *this );
+char* data_toCSON( struct data *this );
+char* data_toData( struct data *this );
 
 bool data_less( struct data *d1, struct data *d2, DATA_COMPARATOR );
 bool data_equals( struct data *d1, struct data *d2, DATA_COMPARATOR );
@@ -91,6 +96,10 @@ extern struct data_type {
     bool (*setId)( struct data *this, int id );
     bool (*setEmail)( struct data *this, const char* email );
     char * (*toString)( struct data *this );
+    char * (*toInfo)( struct data *this );
+    char * (*toJSON)( struct data *this );
+    char * (*toCSON)( struct data *this );
+    char * (*toData)( struct data *this );
 
     bool (*less)( struct data *d1, struct data *d2, DATA_COMPARATOR );
     bool (*equals)( struct data *d1, struct data *d2, DATA_COMPARATOR );

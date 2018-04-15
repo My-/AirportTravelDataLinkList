@@ -39,11 +39,24 @@ void data_email_test(){
     Test.assertFalse( Data.setEmail(data, "er@.we"), "er@.we" );
 }
 
+void data_stringify_test(){
+    Test.display("Stringify Test", MAGENTA_TEXT);
+
+    struct data *jhon = Data.of(11, "Jhon", "Doe", 2000, "jhon@mail.com");
+    Data.setTravelData(jhon, UK, ECONOMY, LESS_3_TIMES, MORE_7_DAYS);
+
+    puts(Data.toString(jhon));
+    puts(Data.toJSON(jhon));
+    puts(Data.toCSON(jhon));
+    puts(Data.toData(jhon));
+}
+
 void data_runAll(){
     Test.display("Data Test", BLUE_TEXT);
     data_of_test();
     data_delete_test();
     data_email_test();
+    data_stringify_test();
 }
 
 // int main(int argc, char const *argv[]) {

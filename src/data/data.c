@@ -32,6 +32,10 @@ struct data_type Data = {
     .setId = data_setId,
     .setEmail = data_setEmail,
     .toString = data_toString,
+    .toInfo = data_toInfo,
+    .toJSON = data_toJSON,
+    .toCSON = data_toCSON,
+    .toData = data_toData,
 
     .less = data_less,
     .equals = data_equals,
@@ -114,12 +118,41 @@ bool data_remove( struct data *this){
 
 }
 
+// http://joequery.me/code/snprintf-c/
+// https://stackoverflow.com/questions/804288/creating-c-formatted-strings-not-printing-them
+char* data_toString(struct data *this){
+    char *s = (char*)malloc(500 *sizeof(char));
+
+    sprintf(s, "\n\tid: %d\n\tname: %s\n\tsurname: %s\n\tyearBorn: %d\n\temail: %s\n\tcountry: %s\n\ttravelClass: %s\n\ttravelFrequency: %s\n\tstayDuration: %s\n", this->id, this->name, this->surname, this->yearBorn, this->email, country_toStr[this->country], travelClass_toStr[this->travelClass], travelFrequency_toStr[this->travelFrequency], stayDuration_toStr[this->stayDuration]);
+    return s;
+}
+
+char* data_toJSON(struct data *this){
+    char *s = (char*)malloc(200 *sizeof(char));
+
+    sprintf(s, "{\n\t\"id\" : %d\n\t\"name\" : \"%s\"\n\t\"surname\" : \"%s\"\n\t\"yearBorn\" : %d\n\t\"email\" : \"%s\"\n\t\"country\" : %d\n\t\"travelClass\" : %d\n\t\"travelFrequency\" : %d\n\t\"stayDuration\" : %d\n}\n", this->id, this->name, this->surname, this->yearBorn, this->email, this->country, this->travelClass, this->travelFrequency, this->stayDuration);
+    return s;
+}
+
+char* data_toCSON(struct data *this){
+    char *s = (char*)malloc(200 *sizeof(char));
+
+    sprintf(s, "\n\tid: %d\n\tname: '%s'\n\tsurname: '%s'\n\tyearBorn: %d\n\temail: '%s'\n\tcountry: %d\n\ttravelClass: %d\n\ttravelFrequency: %d\n\tstayDuration: %d\n", this->id, this->name, this->surname, this->yearBorn, this->email, this->country, this->travelClass, this->travelFrequency, this->stayDuration);
+    return s;
+}
+
+char* data_toData(struct data *this){
+    char *s = (char*)malloc(200 *sizeof(char));
+
+    sprintf(s, "%d %s %s %d %s %d %d %d %d\n", this->id, this->name, this->surname, this->yearBorn, this->email, this->country, this->travelClass, this->travelFrequency, this->stayDuration);
+    return s;
+}
 
 
 // https://www.tutorialspoint.com/cprogramming/c_strings.htm
 // https://stackoverflow.com/a/32819876/5322506
-char* data_toString(struct data *this){
-    printf("%d %d\n", this->id, this->yearBorn);
+char* data_toInfo(struct data *this){
+    // printf("%d %d\n", this->id, this->yearBorn);
     // ID toString
     int len = snprintf( NULL, 0, "%d", this->id );
     char* id_str = malloc( len +1 );
@@ -130,7 +163,7 @@ char* data_toString(struct data *this){
     char* year_Str = malloc( len + 1 );
     snprintf( year_Str, len + 1, "%d", this->yearBorn );
 
-    printf("%s %s : %d %d\n", id_str, year_Str, this->id, this->yearBorn);
+    // printf("%s %s : %d %d\n", id_str, year_Str, this->id, this->yearBorn);
 
     // Create Data string
     char* str = malloc( 1 );
@@ -155,7 +188,7 @@ char* data_toString(struct data *this){
     strcat(str, (this->stayDuration < SIZE_STAY_DURATION ? stayDuration_toStr[this->stayDuration] : stayDuration_toStr[0]));
     strcat(str, "\n}\n");
 
-    printf("%s %s : %d %d\n", id_str, year_Str, this->id, this->yearBorn);
+    // printf("%s %s : %d %d\n", id_str, year_Str, this->id, this->yearBorn);
 
     free(id_str);   // free memory from temporary variable
     free(year_Str);   // free memory from temporary variable

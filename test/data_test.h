@@ -12,6 +12,8 @@
 void data_of_test();
 void data_delete_test();
 void data_email_test();
+void data_stringify_test();
+
 void data_runAll();
 
 
