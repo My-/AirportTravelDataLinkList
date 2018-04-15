@@ -296,7 +296,7 @@ void list_saveToFile( struct list *this, char *fileName, DATA_STRINGIFY ){
         struct node **currentNode = &this->CURRENT_NODE;
         struct data *tmpData;
 
-        for( tmpData = List.getFirst(this); Node.hasNext(*currentNode); tmpData = List.getNext(this) ){
+        for( tmpData = List.getFirst(this); tmpData != NULL; tmpData = List.getNext(this) ){
             if( List.isEmpty(this) ){ puts("Empty list"); break; }
             fprintf( pFile,"%s", stringify(tmpData) );
             free(tmpData); // stringify creates new maclloc each call.
@@ -304,9 +304,9 @@ void list_saveToFile( struct list *this, char *fileName, DATA_STRINGIFY ){
         }
 
         // write last record
-        if( !List.isEmpty(this) ){
-            fprintf( pFile,"%s", stringify(tmpData) );
-        }
+        // if( !List.isEmpty(this) ){
+        //     fprintf( pFile,"%s", stringify(tmpData) );
+        // }
 
         fclose(pFile);
         free(tmpData);
