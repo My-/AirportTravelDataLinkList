@@ -45,6 +45,7 @@ int list_size( struct list *this );
 void list_showAll( struct list *this );
 bool list_isEmpty( struct list *this );
 struct list * list_search( struct list *this, struct data *matchData, DATA_PREDICATE, DATA_COMPARATOR );
+void list_saveToFile( struct list *this, char *fileName, DATA_STRINGIFY );
 
 
 extern struct list_type {
@@ -65,6 +66,7 @@ extern struct list_type {
     void (*showAll)( struct list *this );
     bool (*isEmpty)( struct list *this );
     struct list * (*search)( struct list *this, struct data *matchData, DATA_PREDICATE, DATA_COMPARATOR );
+    void (*saveToFile)( struct list *this, char *fileName, DATA_STRINGIFY );
 } List;
 
 

@@ -171,6 +171,11 @@ void list_sort_test(){
     Test.assertEqual_Int(44, List.get(myList, 9)->id, "id at index: 9");
 }
 
+void list_saveTFile_test(){
+    Test.display("List Save to File", MAGENTA_TEXT);
+    
+}
+
 void list_runAll(){
     Test.display("List tests", BLUE_TEXT);
 
@@ -181,4 +186,5 @@ void list_runAll(){
     list_insertSorted_test();
     list_getAtIndex_test();
     list_sort_test();
+    list_saveTFile_test();
 }

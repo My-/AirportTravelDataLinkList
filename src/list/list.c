@@ -22,7 +22,8 @@ struct list_type List = {
     .size = list_size,
     .showAll = list_showAll,
     .isEmpty = list_isEmpty,
-    .search = list_search
+    .search = list_search,
+    .saveToFile = list_saveToFile
 };
 
 
@@ -277,4 +278,32 @@ struct list * list_search( struct list *this, struct data *compareTo, DATA_PREDI
     }
     // if list empty( no maches found) return NULL.
     return List.isEmpty(R) ? NULL : R;
+}
+
+void list_saveToFile( struct list *this, char *fileName, DATA_STRINGIFY ){
+    FILE* pFile;
+    pFile = fopen(fileName, "w");
+
+// List.showAll(this);
+
+    if( !pFile ){ puts("The file could not be opened"); }
+    else{
+        struct node **currentNode = &this->CURRENT_NODE;
+        struct data *tmpData;
+
+        for( tmpData = List.getFirst(this); Node.hasNext(*currentNode); tmpData = List.getNext(this) ){
+            if( List.isEmpty(this) ){ puts("Empty list"); break; }
+            fprintf( pFile,"%s", stringify(tmpData) );
+            free(tmpData); // stringify creates new maclloc each call.
+            // puts(fileName);
+        }
+
+        // write last record
+        if( !List.isEmpty(this) ){
+            fprintf( pFile,"%s", stringify(tmpData) );
+        }
+
+        fclose(pFile);
+        free(tmpData);
+    }
 }
