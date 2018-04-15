@@ -23,7 +23,8 @@ struct list_type List = {
     .showAll = list_showAll,
     .isEmpty = list_isEmpty,
     .search = list_search,
-    .saveToFile = list_saveToFile
+    .saveToFile = list_saveToFile,
+    .removeRecords = list_removeRecords
 };
 
 
@@ -293,22 +294,62 @@ void list_saveToFile( struct list *this, char *fileName, DATA_STRINGIFY ){
 
     if( !pFile ){ puts("The file could not be opened"); }
     else{
-        struct node **currentNode = &this->CURRENT_NODE;
         struct data *tmpData;
 
         for( tmpData = List.getFirst(this); tmpData != NULL; tmpData = List.getNext(this) ){
             if( List.isEmpty(this) ){ puts("Empty list"); break; }
             fprintf( pFile,"%s", stringify(tmpData) );
             free(tmpData); // stringify creates new maclloc each call.
-            // puts(fileName);
         }
-
-        // write last record
-        // if( !List.isEmpty(this) ){
-        //     fprintf( pFile,"%s", stringify(tmpData) );
-        // }
 
         fclose(pFile);
         free(tmpData);
     }
 }
+
+bool list_removeRecords( struct list *this, struct data *matchData, DATA_COMPARATOR){
+    bool R = false;
+    struct data *currData;
+
+    for( currData = List.getFirst(this); currData != NULL; currData = List.getNext(this) ){
+
+        if( compareData(matchData, currData) == 0 ){
+            // Only one Node in list
+            if( this->FIRST_NODE == this->LAST_NODE ){
+                this->LAST_NODE = NULL;
+                this->FIRST_NODE = NULL;
+                Node.remove(&this->CURRENT_NODE);
+                this->CURRENT_NODE = NULL;
+                R = true;
+                continue;
+            }
+
+            // Deleteing first Node
+            if( this->CURRENT_NODE == this->FIRST_NODE ){
+                this->FIRST_NODE = this->FIRST_NODE->NEXT;
+                Node.remove(&this->CURRENT_NODE);
+                this->CURRENT_NODE = this->FIRST_NODE;
+                R = true;
+                continue;
+            }
+
+            // Deleting last Node
+            if( this->CURRENT_NODE == this->LAST_NODE ){
+                this->LAST_NODE = this->LAST_NODE->PREV;
+                Node.remove(&this->CURRENT_NODE);
+                this->CURRENT_NODE = this->LAST_NODE;
+                R = true;
+                continue;
+            }
+
+            // Deletin from middle
+            struct node * prevNode = this->CURRENT_NODE->PREV;
+            Node.remove(&this->CURRENT_NODE);
+            this->CURRENT_NODE = prevNode;
+            R = true;
+
+        }//if (match)
+
+    }// for Loop
+    return R;
+}// list_removeRecords()

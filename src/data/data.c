@@ -106,16 +106,11 @@ bool data_setEmail( struct data *this, const char* email ){
     return false;
 }
 
-
-bool data_remove( struct data *this){
-    // free(this->name);
-    // if( !this->name ){ printf("Deleted.\n"); }
-    // else{ printf("Not Deleted: %s\n", this->name); }
-    //
-    // free(this);
-    // if( !this ){ printf("Deleted.\n"); }
-    // else{ printf("Not Deleted: %s\n", this->name); }
-
+// https://stackoverflow.com/questions/1025589/setting-variable-to-null-after-free
+bool data_remove( struct data **this){
+    // and its why people hate C...
+    free(*this);
+    *this = NULL;
 }
 
 // http://joequery.me/code/snprintf-c/

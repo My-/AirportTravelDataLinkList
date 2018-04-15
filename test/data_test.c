@@ -18,13 +18,17 @@ void data_of_test(){
     Test.assertEqual_Int(ECONOMY, jhon->travelClass, "Testing travel class");
 }
 
-void data_delete_test(){
-    struct data *jhon = Data.of(11, "Jhon", "Doe", 2000, "jhon@mail.com");
-    Data.setTravelData(jhon, UK, ECONOMY, LESS_3_TIMES, MORE_7_DAYS);
 
-    Test.display("Node remove test", MAGENTA_TEXT);
-    // Data.delete(jhon);
-    Test.assertTrue(false, "TODO: Fix Data.delete()");
+// https://stackoverflow.com/questions/1025589/setting-variable-to-null-after-free
+void data_delete_test(){
+    Test.display("Data remove test", MAGENTA_TEXT);
+
+    struct node * node = Node.of(
+        Data.of(11, "Jhon", "Doe", 2000, "jhon@mail.com")
+    );
+
+    Data.remove(&node->data);
+    Test.assertTrue(node->data == NULL, "Data.remove()");
 }
 
 void data_email_test(){

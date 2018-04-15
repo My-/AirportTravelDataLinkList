@@ -44,7 +44,14 @@ bool db_addRecord( struct db *this, struct data *data ){
 }
 
 bool db_removeRecord(struct db *this, int id ){
-    // TODO: delate record
+    struct data * tmpData = Data.empty();
+    tmpData->id = id;
+
+    bool isOK = List.removeRecords(this->list, tmpData, Data.compareId);
+    free(tmpData);
+    tmpData = NULL;
+
+    return isOK;
 }
 
 struct data * db_getRecord( struct db *this, int id ){

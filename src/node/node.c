@@ -38,11 +38,12 @@ struct node * node_of( struct data *data ){
 bool node_hasNext( struct node *this ){ return this->NEXT; }
 bool node_hasPrev( struct node *this ){ return this->PREV; }
 
-void node_remove( struct node *this ){  // TODO: fix it
-    this->PREV->NEXT = this->NEXT;
-    this->NEXT->PREV = this->PREV;
-    Data.remove( this->data );
-    free(this);
+void node_remove( struct node **this ){
+    if( Node.hasPrev(*this) ){ (*this)->PREV->NEXT = (*this)->NEXT; }
+    if( Node.hasNext(*this) ){ (*this)->NEXT->PREV = (*this)->PREV; }
+    Data.remove( &(*this)->data ); // taking address of data pointer from addres of node pointer.
+    free(*this);
+    *this = NULL;
 }
 
 void node_insertBefore( struct node *this, struct data *data ){

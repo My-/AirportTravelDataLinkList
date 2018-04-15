@@ -28,7 +28,7 @@ struct node {
 struct node * node_of( struct data *data );
 bool node_hasNext( struct node *this );
 bool node_hasPrev( struct node *this );
-void node_remove( struct node *this );
+void node_remove( struct node **this );
 void node_insertBefore( struct node *this, struct data *data );
 void node_insertAfter( struct node *this, struct data *data );
 struct data * node_getData( struct node *this );
@@ -41,7 +41,7 @@ struct node_type {
     struct node * (*of)( struct data *data );
     bool (*hasNext)( struct node *this );
     bool (*hasPrev)( struct node *this );
-    void (*remove)( struct node *this );
+    void (*remove)( struct node **this );
     void (*insertBefore)( struct node *this, struct data *data );
     void (*insertAfter)( struct node *this, struct data *data );
     struct data * (*getData)( struct node *this );

@@ -2,11 +2,11 @@
 #include "node_test.h"
 
 void node_of_test(){
+    Test.display("Node creation test", MAGENTA_TEXT);
     struct data *jhon = Data.of(11, "Jhon", "Doe", 2000, "jhon@mail.com");
     struct data *bob = Data.of(11, "Bob", "Doe", 2000, "jhon@mail.com");
     struct node * head = Node.of(jhon);
 
-    Test.display("Node creation test", MAGENTA_TEXT);
     Test.assertEqual_String("Jhon", Node.getData(head)->name, "Node.getData(head)");
     Test.assertFalse(head->NEXT, "head->NEXT");
 
@@ -16,6 +16,7 @@ void node_of_test(){
 }
 
 void node_has_test(){
+    Test.display("Node has test", MAGENTA_TEXT);
     struct node *head = Node.of(
         Data.of(11, "Jhon", "Doe", 2000, "jhon@mail.com")
     );
@@ -24,7 +25,6 @@ void node_has_test(){
     );
     head->NEXT->PREV = head;
 
-    Test.display("Node has test", MAGENTA_TEXT);
     Test.assertFalse(Node.hasPrev(head), "Node.hasPrev(head)");
     Test.assertTrue(Node.hasPrev(head->NEXT), "Node.hasPrev(head->NEXT)");
     Test.assertTrue(Node.hasNext(head), "Node.hasNext(head)");
@@ -32,24 +32,24 @@ void node_has_test(){
 }
 
 void node_remove_test(){
+    Test.display("Node remove test", MAGENTA_TEXT);
     struct node *head = Node.of(
         Data.of(11, "Jhon", "Doe", 2000, "jhon@mail.com")
     );
 
-    Test.display("Node remove test", MAGENTA_TEXT);
-    Test.assertTrue(false, "TODO: Fix Node.remove(), fix Dta.Delate first");
+    Node.remove(&head);
+    Test.assertTrue(head == NULL, "Node.remove()");
     // Test.assertTrue(Node.getData(head), "has data");
-    // Node.remove(head);
     // Test.assertFalse(head, "has data");
 
 }
 
 void node_insert_test(){
+    Test.display("Node insetion test", MAGENTA_TEXT);
     struct node *head = Node.of(
         Data.of(11, "Jhon", "Doe", 2000, "jhon@mail.com")
     );
 
-    Test.display("Node insetion test", MAGENTA_TEXT);
     Test.assertFalse(Node.hasPrev(head), "Node.hasNext(head)");
     Test.assertFalse(Node.hasNext(head), "Node.hasNext(head)");
 

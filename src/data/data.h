@@ -63,7 +63,7 @@ struct data {
 struct data * data_empty();
 struct data * data_of(int id, char *name, char *surname, int yearBorn, char *email);
 void data_setTravelData(struct data *this, int country, int travelClass, int travelFrequency, int stayDuration);
-bool data_remove( struct data *this);
+bool data_remove( struct data **this);
 bool data_setId( struct data *this, int id );
 bool data_setEmail( struct data *this, const char* email );
 char* data_toString( struct data *this );
@@ -92,7 +92,7 @@ extern struct data_type {
     struct data * (*empty)();
     struct data * (*of)(int id, char *name, char *surname, int yearBorn, char *email);
     void (*setTravelData)(struct data *this, int country, int travelClass, int travelFrequency, int stayDuration);
-    bool (*remove)( struct data *this );
+    bool (*remove)( struct data **this );
     bool (*setId)( struct data *this, int id );
     bool (*setEmail)( struct data *this, const char* email );
     char * (*toString)( struct data *this );

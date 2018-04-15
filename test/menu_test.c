@@ -6,7 +6,8 @@ void menu_report_test(){
     struct db *db = DataBase.empty();
     DataBase.load(db, DB_FILE);
 
-    Menu.report(db);
+    // Menu.report(db);
+    puts(currentTime());
 
 }
 

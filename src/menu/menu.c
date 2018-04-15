@@ -297,16 +297,26 @@ void menu_updateRecord(struct db* db){
 }
 
 void menu_deleteRecord(struct db* db){
-    puts("TODO:"); // TODO:
+    int id;
+    do{
+        puts("=======================================");
+        puts("=     Delete Record                   =");
+        puts("=======================================");
+        puts("\nEnter ID ([0] - to exit):");
+        scanf("%d", &id);
 
+        printf("Record (id:%d)... ", id);
+        if( DataBase.removeRecord(db, id) ){ puts("deleted!"); }
+        else{ puts("NOT deleted!"); }
 
+    }while( id );
 }
 
 struct list * choiceOne(struct db *db){
     int choice;
     struct list *list = List.empty();
     struct data *tmpData = Data.empty();
-
+    // char classStr[20];
 
     do{
         puts("[1] - Travel Class");
@@ -316,8 +326,10 @@ struct list * choiceOne(struct db *db){
 
         switch( choice ){
             case 1:
+                // strcmp(classStr, "travel ");
                 tmpData->travelClass = getTravelClass();
                 list = DataBase.search(db, tmpData, Data.equals, Data.compareTravelClass);
+                // strcat(classStr, travelClass_toStr[tmpData->travelClass]);
                 // printf("Trvel %s and ", travelClass_toStr[tmpData->travelClass]);
                 break;
             case 2:
@@ -378,7 +390,7 @@ void menu_statistics(struct db* db){
             tmpData->country = country;
             tmpListTwo = List.search(tmpListOne, tmpData, Data.equals, Data.compareCountry);
             if( !List.isEmpty(tmpListTwo) ){ matches = List.size(tmpListTwo) * 100 / size; }
-            printf("Passengers travel from %s is %.1f percent.\n", country_toStr[country], matches);
+            printf("%.1f percent of passengers travel from %s.\n", matches, country_toStr[country]);
             break;
         case 6:
         case 7:
@@ -387,7 +399,7 @@ void menu_statistics(struct db* db){
             tmpData->stayDuration = stay;
             tmpListTwo = List.search(tmpListOne, tmpData, Data.equals, Data.compareStayDuration);
             if( !List.isEmpty(tmpListTwo) ){ matches = List.size(tmpListTwo) * 100 / size; }
-            printf("Passengers stayed %s is %.1f percent.\n", stayDuration_toStr[stay], matches);
+            printf("%.1f percent of passengers stayed %s.\n", matches, stayDuration_toStr[stay]);
             break;
         default:
             puts("Wrong choice! Try again.");
@@ -496,7 +508,7 @@ void menu_listOrdered(struct db* db){
             case 6: List.sort(tmpList, Data.compareCountry);       puts("...done"); break;
             case 7: List.sort(tmpList, Data.compareTravelClass);   puts("...done"); break;
             case 8: List.sort(tmpList, Data.compareTravelFrequency); puts("...done"); break;
-            case 9: List.sort(tmpList, Data.compareStayDuration); puts("...done"); break;
+            case 9: List.sort(tmpList, Data.compareStayDuration);  puts("...done"); break;
             default:
                 puts("Wrong choice! Try again.");
         }

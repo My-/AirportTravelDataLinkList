@@ -8,6 +8,7 @@
 
 #include "../src/test/test.h"
 #include "../src/data/data.h"
+#include "../src/node/node.h"
 
 void data_of_test();
 void data_delete_test();
