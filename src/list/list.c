@@ -124,16 +124,19 @@ struct data * list_get(struct list *this, int index ){
 }
 
 struct data * list_getFirst(struct list *this ){
+    if( list_isEmpty(this) ){ return NULL; }
     this->CURRENT_NODE = this->FIRST_NODE;
     return Node.getData(this->CURRENT_NODE); // same as this->CURRENT_NODE->data
 }
 
 struct data * list_getLast(struct list *this ){
+    if( list_isEmpty(this) ){ return NULL; }
     this->CURRENT_NODE = this->LAST_NODE;
     return Node.getData(this->CURRENT_NODE);
 }
 
 struct data * list_getNext(struct list *this ){
+    if( list_isEmpty(this) ){ return NULL; }
     if( Node.hasNext(this->CURRENT_NODE) ){
         this->CURRENT_NODE = this->CURRENT_NODE->NEXT;
         // this->PREV_NODE = this->CURRENT_NODE->PREV;
@@ -143,6 +146,7 @@ struct data * list_getNext(struct list *this ){
 }
 
 struct data * list_getPrev(struct list *this ){
+    if( list_isEmpty(this) ){ return NULL; }
     if( Node.hasPrev(this->CURRENT_NODE) ){
         this->CURRENT_NODE = this->CURRENT_NODE->PREV;
         // this->PREV_NODE = this->CURRENT_NODE->PREV;
@@ -240,6 +244,7 @@ void list_showAll( struct list *this ){
     // puts(" here");
     if( List.isEmpty(this) ){ puts("NULL list."); return; }
     struct data* data = List.getFirst(this);
+    // printf("%s  %-4s %-10s %-10s %5s %15s %2s %2s %2s %2s\n","   ", "ID", "Name", "Surname", "Born in", "Email", "Country", "Travel Class", "Travel Frequency", "Stay Duration");
     printf("[%d]: %-4d %-10s %-10s %5d %15s %2d %2d %2d %2d\n",index, data->id, data->name, data->surname, data->yearBorn, data->email, data->country, data->travelClass, data->travelFrequency, data->stayDuration);
 
     while( Node.hasNext(this->CURRENT_NODE) ){
