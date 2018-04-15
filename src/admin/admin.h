@@ -26,6 +26,9 @@ char* adminLogin();
 */
 bool adminLoginValidate(char *username, char *password);
 
+/**
+*   Function resposible for getting user password
+*/
 char* takePassword();
 
 #endif

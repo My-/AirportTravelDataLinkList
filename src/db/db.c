@@ -111,15 +111,11 @@ bool db_load( struct db *this, char *fileName ){
         char str[30];
 
         while( !feof(pFile) ){
-            // puts("reading...");
-			numChar = fscanf(pFile, "%s", input); // 35 = #
-			// numChar = fscanf(pFile, "%c", &ch); // 35 = #
-            // scanf(" %s(%d)", input, numChar);
+            numChar = fscanf(pFile, "%s", input); // read first lins record
 
-			if( numChar > 0 ){
-                if( strchr(input, '#') ){       // skip coments
-                     // puts("comment");
-                     fgets (input, 600, pFile);
+            if( numChar > 0 ){
+                if( strchr(input, '#') ){       // skip comments (comment starts with '#')
+                     fgets (input, 600, pFile); 
                 }
 				else{
                     // printf("Input: %s\n", input);

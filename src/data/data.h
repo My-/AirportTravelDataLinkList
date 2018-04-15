@@ -16,15 +16,10 @@
 #include <stdbool.h>    // boolean
 #include <string.h>     // string
 
+// function signatures (prototypes)
 #define DATA_COMPARATOR int(*compareData)(struct data*, struct data*)
 #define DATA_PREDICATE bool (*predicateData)(struct data*, struct data*, DATA_COMPARATOR)
 #define DATA_STRINGIFY char*(*stringify)(struct data*)
-// #define DATA_LESS           \
-//     DATA_PREDICATE(struct data *d1, struct data *d2, DATA_COMPARATOR){     \
-//         return DATA_COMPARATOR < 0;     \
-//     }
-// #define DATA_EQUAL bool (*predicateData)(struct data*, struct data*)
-// #define DATA_MORE bool (*predicateData)(struct data*, struct data*)
 
 // https://stackoverflow.com/a/2181941/5322506
 typedef enum{ NO_COUNTRY, UK, EUROPE, ASIA, AMERICAS, AUSTRALIA, SIZE_COUNTIES }Countries;
@@ -44,7 +39,7 @@ static char *stayDuration_toStr[] = { "invalid data", "1 day", "3 and less days"
 // function prototype
 bool isEmailValid( const char *email );
 
-// "class" instance fields
+// Data "class" instance fields
 struct data {
     struct data_type * _it;  // because it's a pointer, it will be shared between all structs
     // "class" fields
@@ -71,11 +66,11 @@ char* data_toInfo( struct data *this );
 char* data_toJSON( struct data *this );
 char* data_toCSON( struct data *this );
 char* data_toData( struct data *this );
-
+// logical operators (predicates)
 bool data_less( struct data *d1, struct data *d2, DATA_COMPARATOR );
 bool data_equals( struct data *d1, struct data *d2, DATA_COMPARATOR );
 bool data_more( struct data *d1, struct data *d2, DATA_COMPARATOR );
-
+// comparators
 int data_compareId( struct data* n1, struct data* n2 );
 int data_compareName( struct data *n1, struct data *n2 );
 int data_compareSurname( struct data *n1, struct data *n2 );
@@ -87,7 +82,7 @@ int data_compareTravelFrequency( struct data *n1, struct data *n2 );
 int data_compareStayDuration( struct data *n1, struct data *n2 );
 
 
-/*** "Class" static fields (methods, class variables) ***/
+/*** It's like class static methods. Shared along all Data class instances ***/
 extern struct data_type {
     struct data * (*empty)();
     struct data * (*of)(int id, char *name, char *surname, int yearBorn, char *email);

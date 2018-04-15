@@ -15,8 +15,9 @@ struct node_type Node = {
     .totalNodes = 0
 };
 
-/** Private class methods **/
-
+/**
+*   swaps Node's data.
+*/
 void node_swapData(struct node *n1, struct node *n2){
     struct data *tmp = Node.getData(n1);
     Node.setData( n1, Node.getData(n2) );
@@ -24,8 +25,7 @@ void node_swapData(struct node *n1, struct node *n2){
 }
 
 
-/** Public class methods **/
-
+// creates new node
 struct node * node_of( struct data *data ){
     struct node * newNode = (struct node*)malloc(sizeof(struct node));
     newNode->data = data;
@@ -44,6 +44,7 @@ void node_remove( struct node **this ){
     Data.remove( &(*this)->data ); // taking address of data pointer from addres of node pointer.
     free(*this);
     *this = NULL;
+    Node.totalNodes--;
 }
 
 void node_insertBefore( struct node *this, struct data *data ){
@@ -60,7 +61,6 @@ void node_insertAfter( struct node *this, struct data *data ){
     struct node * newNode = Node.of(data);
     if( this->NEXT ){
         newNode->NEXT = this->NEXT;
-        // if( this->PREV ){ this->PREV->NEXT = newNode; }
         this->NEXT->PREV = newNode;
     }
     this->NEXT = newNode;
@@ -76,6 +76,7 @@ struct node * node_setData( struct node *this, struct data *data ){
     return this;
 }
 
+// gets index of given node.
 int node_indexOf(struct node *this){
     int index = 0;
     while( Node.hasPrev(this) ){

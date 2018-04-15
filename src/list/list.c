@@ -1,9 +1,6 @@
 
 #include "list.h"
 
-
-
-
 // List "class"
 struct list_type List = {
     .empty = list_empty,
@@ -29,9 +26,6 @@ struct list_type List = {
 
 
 ///////////////////////////////////////////////////////////////////////////////
-
-/** Private class methods **/
-
 
 
 // https://en.wikipedia.org/wiki/Quicksort
@@ -75,7 +69,6 @@ void quickSort( struct list *list,
 struct list * list_empty(){
     struct list * this = (struct list*)(malloc(sizeof(struct list)));
     this->FIRST_NODE = NULL;
-    // this->PREV_NODE = NULL;
     this->CURRENT_NODE = NULL;
     this->LAST_NODE = NULL;
     this->size = 0;
@@ -87,7 +80,6 @@ struct list * list_of( struct data *data ){
     struct list * this = List.empty();
     struct node * newNode = Node.of(data);
     this->FIRST_NODE = newNode;
-    // this->PREV_NODE = newNode;
     this->CURRENT_NODE = newNode;
     this->LAST_NODE = newNode;
     this->size = 1;
@@ -95,24 +87,27 @@ struct list * list_of( struct data *data ){
     return this;
 }
 
+// gets data from list at given index
 struct data * list_get(struct list *this, int index ){
     if( index < 1 ){                            // negative or 0 (zero)
         this->CURRENT_NODE = this->FIRST_NODE;
         return Node.getData( this->CURRENT_NODE );
-    }else if( (List.size(this) -1) <= index ){  // equals or bigger then (List.size -1)
+    }
+    else if( (List.size(this) -1) <= index ){  // equals or bigger then (List.size -1)
         this->CURRENT_NODE = this->LAST_NODE;
         return Node.getData( this->CURRENT_NODE );
     }
-    // else. start from begining by default
+    // else. start from begining by default...
     this->CURRENT_NODE = this->FIRST_NODE;
     int i = 0, updater = 1, half = List.size(this) / 2;
 
-    if( half <= index ){ // if index is in bigger half, start from the end.
+    if( half <= index ){ // ...if index is in bigger half, start from the end.
         this->CURRENT_NODE = this->LAST_NODE;
         i = List.size(this) -1;
         updater = -1;
     }
 
+    // start from start/end and go towards middle
     struct data *R = NULL;
     while( i != index ){
         i += updater;
@@ -140,7 +135,7 @@ struct data * list_getNext(struct list *this ){
     if( list_isEmpty(this) ){ return NULL; }
     if( Node.hasNext(this->CURRENT_NODE) ){
         this->CURRENT_NODE = this->CURRENT_NODE->NEXT;
-        // this->PREV_NODE = this->CURRENT_NODE->PREV;
+
         return Node.getData(this->CURRENT_NODE);
     }
     return NULL;
@@ -150,7 +145,7 @@ struct data * list_getPrev(struct list *this ){
     if( list_isEmpty(this) ){ return NULL; }
     if( Node.hasPrev(this->CURRENT_NODE) ){
         this->CURRENT_NODE = this->CURRENT_NODE->PREV;
-        // this->PREV_NODE = this->CURRENT_NODE->PREV;
+
         return Node.getData(this->CURRENT_NODE);
     }
     return NULL;
@@ -188,7 +183,7 @@ bool list_insertBefore( struct list *this, struct data *data ){
     }
 }
 
-bool list_insertAfter( struct list *this, struct data *data ){ // TODO: remove return type
+bool list_insertAfter( struct list *this, struct data *data ){
     if( this->LAST_NODE == this->CURRENT_NODE ){
         list_addEnd(this, data);
     }else{
@@ -202,33 +197,31 @@ bool list_insertUnique( struct list *this, struct data *data, DATA_COMPARATOR ){
         List.addFront(this, data);
         return true;
     }
-
-    // List.getFirst(this);
+    // check first element
     if( compareData(data, List.getFirst(this)) < 0 ){    // resets current to first position
-        // puts("to front");
         List.addFront(this, data);
         return true;
     }
 
+    // check all the rest
     while( Node.hasNext(this->CURRENT_NODE) ){
         List.getNext(this);     // move CURRENT_NODE to next position
 
         // printf("%d - %d = %d\n",data->id, this->CURRENT_NODE->data->id, compareData(data, Node.getData(this->CURRENT_NODE)));
 
+        // if data to inserd is smaller then data on the current node, insert before it
         if( compareData(data, Node.getData(this->CURRENT_NODE)) < 0 ){
-            // puts("inserting");
             Node.insertBefore(this->CURRENT_NODE, data);
             this->size++;
             return true;
         }
         else if( compareData(data, Node.getData(this->CURRENT_NODE)) == 0  ){
-            // puts("not unique");
             return false; // not unique
         }
-        // this->CURRENT_NODE = this->CURRENT_NODE->NEXT;
     }
-    // puts("add end");
+
     if( compareData(data, Node.getData(this->LAST_NODE)) == 0  ){ return false; }
+    // handle last element
     List.addEnd(this, data);
     return false;
 }
@@ -242,14 +235,13 @@ int list_size(struct list * this){ return this->size; }
 
 void list_showAll( struct list *this ){
     int index = 0;
-    // puts(" here");
-    if( List.isEmpty(this) ){ puts("NULL list."); return; }
+    if( List.isEmpty(this) ){ puts("NULL list."); return; } // if list empty here is nothing to show
+
     struct data* data = List.getFirst(this);
     // printf("%s  %-4s %-10s %-10s %5s %15s %2s %2s %2s %2s\n","   ", "ID", "Name", "Surname", "Born in", "Email", "Country", "Travel Class", "Travel Frequency", "Stay Duration");
     printf("[%d]: %-4d %-10s %-10s %5d %15s %2d %2d %2d %2d\n",index, data->id, data->name, data->surname, data->yearBorn, data->email, data->country, data->travelClass, data->travelFrequency, data->stayDuration);
 
     while( Node.hasNext(this->CURRENT_NODE) ){
-        // puts(Data.toString(data));
         index++;
         data = List.getNext(this);
         printf("[%d]: %-4d %-10s %-10s %5d %15s %2d %2d %2d %2d\n",index, data->id, data->name, data->surname, data->yearBorn, data->email, data->country, data->travelClass, data->travelFrequency, data->stayDuration);
@@ -261,22 +253,25 @@ bool list_isEmpty( struct list *this ){
     return this->FIRST_NODE == NULL;
 }
 
-struct list * list_search( struct list *this, struct data *compareTo, DATA_PREDICATE, DATA_COMPARATOR ){
+struct list * list_search(  struct list *this,
+                            struct data *compareTo,
+                            DATA_PREDICATE,
+                            DATA_COMPARATOR ){
     struct list *R = List.empty();
     List.getFirst(this);        // reset current node to first node
     struct node **currentNode = &this->CURRENT_NODE;
     struct data *currentData = Node.getData(*currentNode);
 
+    // check first element. if matches add to list
     if( predicateData(currentData, compareTo, compareData) ){
         List.addEnd(R, currentData);
     }
 
+    // check all the rest
     while( Node.hasNext(*currentNode) ){
         List.getNext(this);
         currentData = Node.getData(*currentNode);
-
-        // printf("%d - %d = %d\n",currentData->id, compareTo->id, compareData(currentData, compareTo));
-
+        // add to list if maches
         if( predicateData(currentData, compareTo, compareData) ){
             List.addEnd(R, currentData);
         }
@@ -289,8 +284,6 @@ struct list * list_search( struct list *this, struct data *compareTo, DATA_PREDI
 void list_saveToFile( struct list *this, char *fileName, DATA_STRINGIFY ){
     FILE* pFile;
     pFile = fopen(fileName, "w");
-
-// List.showAll(this);
 
     if( !pFile ){ puts("The file could not be opened"); }
     else{
@@ -351,5 +344,6 @@ bool list_removeRecords( struct list *this, struct data *matchData, DATA_COMPARA
         }//if (match)
 
     }// for Loop
+    if( R ){ this->size--; }
     return R;
 }// list_removeRecords()

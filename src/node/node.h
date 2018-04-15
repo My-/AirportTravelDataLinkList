@@ -6,36 +6,32 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>    // boolean
-// #include <string.h>     // string
-
-// #define COMPARATOR_NODE int(*node_comparator)(struct node*, struct node*)
-
-
 
 // Node "class"
 struct node {
     struct data * data;         // pointer to nodes data
     struct node * PREV;         // pointer to previous node
     struct node * NEXT;         // pointer to next node
-    // int index;                  // index of node in list
     struct node_type * _it;     // pointer to nodes type
 };
 
-// int compareBornDate(struct node *n1, struct node *n2);
-// int compareId(struct node* n1, struct node* n2);
-
-
+// creates new Node
 struct node * node_of( struct data *data );
+// checks for availability
 bool node_hasNext( struct node *this );
 bool node_hasPrev( struct node *this );
+// remove Node(calls remove data inside)
 void node_remove( struct node **this );
+// add new node
 void node_insertBefore( struct node *this, struct data *data );
 void node_insertAfter( struct node *this, struct data *data );
+// gets node data
 struct data * node_getData( struct node *this );
 struct node * node_setData( struct node *this, struct data *data );
+// gets ingex of given node. O(n).
 int node_indexOf(struct node *this);
+// swaps data of two given nodes
 void node_swapData(struct node *n1, struct node *n2);
-// int (*node_compareData( struct node*, struct node*))(COMPARATOR_DATA);
 
 struct node_type {
     struct node * (*of)( struct data *data );
@@ -48,23 +44,7 @@ struct node_type {
     struct node * (*setData)( struct node *this, struct data *data );
     int (*indexOf)(struct node *this);
     void (*swapData)(struct node *n1, struct node *n2);
-    // int (*((*node_compareData)( struct node*, struct node*)))(COMPARATOR_DATA);
-    int totalNodes;
+    int totalNodes; // total nodes globaly (in all lists, not only in the current)
 } Node;
-
-
-
-
-// Stream "class"
-// struct stream {
-//     struct list * list;
-//     struct stream_type * _it;
-// };
-//
-// struct stream_type {
-//     struct stream * (*of)( struct list *list );
-//     struct stream * (*filter)( struct stream *this, struct filter *filter );
-//
-// } Stream;
 
 #endif

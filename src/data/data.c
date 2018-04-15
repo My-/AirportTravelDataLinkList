@@ -1,7 +1,9 @@
 #include "data.h"
 
 
-
+/**
+*   Email validator. Minimum needs: (char) @ (char) . (char)
+*/
 bool isEmailValid( const char *email ){
     char * tail = strchr(email, '@');
     if( !tail ){ return false; }
@@ -22,6 +24,7 @@ bool isEmailValid( const char *email ){
 
 /**
 *   It's like Data class.
+*   Here are "glued" shared methods to method implementation.
 *   For more info and refrences check data.h.
 */
 struct data_type Data = {
@@ -85,6 +88,7 @@ struct data * data_of(int id, char *name, char *surname, int yearBorn, char *ema
     return this;
 }
 
+// this functon sets travel related data to Data "object".
 void data_setTravelData( struct data *this, int country, int travelClass, int travelFrequency, int stayDuration ){
     this->country = country;
     this->travelClass = travelClass;
@@ -94,7 +98,7 @@ void data_setTravelData( struct data *this, int country, int travelClass, int tr
 }
 
 bool data_setId( struct data *this, int id ){
-    this->id = id; // TODO: validation
+    this->id = id;
 }
 
 bool data_setEmail( struct data *this, const char* email ){
@@ -106,11 +110,13 @@ bool data_setEmail( struct data *this, const char* email ){
     return false;
 }
 
+// removes (frees) data object
 // https://stackoverflow.com/questions/1025589/setting-variable-to-null-after-free
 bool data_remove( struct data **this){
     // and its why people hate C...
     free(*this);
     *this = NULL;
+    return true;
 }
 
 // http://joequery.me/code/snprintf-c/
@@ -122,6 +128,7 @@ char* data_toString(struct data *this){
     return s;
 }
 
+// stringify function iplementations
 char* data_toJSON(struct data *this){
     char *s = (char*)malloc(200 *sizeof(char));
 
@@ -143,7 +150,7 @@ char* data_toData(struct data *this){
     return s;
 }
 
-
+// This is my first atempt to create JSON like output. it is unused function. here for reference only. 
 // https://www.tutorialspoint.com/cprogramming/c_strings.htm
 // https://stackoverflow.com/a/32819876/5322506
 char* data_toInfo(struct data *this){

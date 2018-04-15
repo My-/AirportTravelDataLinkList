@@ -60,6 +60,9 @@ char* adminLogin(){
     return username;
 }
 
+/**
+*   Function resposible for getting user password
+*/
 char* takePassword(){
     // https://stackoverflow.com/questions/1798511/how-to-avoid-pressing-enter-with-getchar
     // http://codingstreet.com/c-code-to-hide-input-password/
