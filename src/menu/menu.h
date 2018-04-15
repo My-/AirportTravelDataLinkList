@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>    // boolean
+#include <time.h>
 #include "../db/db.h"
 
 
@@ -18,6 +19,8 @@ void menu_deleteRecord(struct db* db);
 void menu_statistics(struct db* db);
 void menu_report(struct db* db);
 void menu_listOrdered(struct db* db);
+
+char *currentTime();
 
 extern struct menu {
     void (*main)(struct db*);

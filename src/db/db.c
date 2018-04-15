@@ -88,16 +88,7 @@ struct list * db_search( struct db *this, struct data *compareTo, DATA_PREDICATE
 }
 
 bool db_save( struct db *this, char *fileName ){
-    FILE* pFile;
-    pFile = fopen(fileName, "w");
-
-    if( !pFile ){ puts("The file could not be opened"); }
-    else{
-
-        fclose(pFile);
-        return true;
-    }
-    return false;
+    List.saveToFile(this->list, fileName, Data.toData );
 }
 
 bool db_load( struct db *this, char *fileName ){

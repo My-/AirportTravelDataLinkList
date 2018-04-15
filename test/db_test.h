@@ -12,6 +12,7 @@
 void db_login_test();
 void db_load_test();
 void db_search_test();
+void db_save_test();
 
 void db_runAll();
 

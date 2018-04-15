@@ -1,5 +1,35 @@
 #include "menu.h"
 
+
+// https://en.wikipedia.org/wiki/C_date_and_time_functions
+char *currentTime(){
+    time_t current_time;
+    char* c_time_string;
+
+    /* Obtain current time. */
+    current_time = time(NULL);
+
+    if( current_time == ((time_t)-1) ){
+        (void) fprintf(stderr, "Failure to obtain the current time.\n");
+    }
+
+    /* Convert to local time format. */
+    c_time_string = ctime(&current_time);
+
+    if( c_time_string == NULL ){
+        (void) fprintf(stderr, "Failure to convert the current time.\n");
+    }
+
+    for(int i = 0; i < strlen(c_time_string); i++){
+        if( c_time_string[i] == ' ' ){ c_time_string[i] = '_'; }
+    }
+
+    /* Print to stdout. ctime() has already added a terminating newline character. */
+    // (void) printf("Current time is %s", c_time_string);
+    return c_time_string;
+}
+
+
 struct menu Menu = {
     .main = menu_main,
     .addRecord = menu_addRecord,
@@ -364,7 +394,6 @@ void menu_statistics(struct db* db){
     }
 
     // List.showAll(tmpListTwo);
-    // TODO: save to report file
 
     free(tmpListOne);
     free(tmpListTwo);
@@ -408,6 +437,23 @@ void menu_report(struct db* db){
     }
 
     // List.showAll(tmpListTwo);
+
+    // create fake data
+    if( List.isEmpty(tmpListTwo) ){
+         tmpData->id = 0;
+         tmpData->name = "";
+         tmpData->surname = "";
+         tmpData->yearBorn = 0;
+         tmpData->email = "";
+         tmpData->country = 0;
+         tmpData->travelClass = 0;
+         tmpData->travelFrequency = 0;
+         tmpData->stayDuration = 0;
+         List.addFront(tmpListTwo, tmpData);
+    }
+
+    char reportFile[50];
+    List.saveToFile(tmpListTwo, currentTime(), Data.toString);
 
     free(tmpListOne);
     free(tmpListTwo);

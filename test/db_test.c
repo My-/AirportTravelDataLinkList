@@ -81,9 +81,23 @@ void db_search_test(){
 
 }
 
+void db_save_test(){
+    Test.display("DB Save test", MAGENTA_TEXT);
+
+    struct list *list;
+    struct data* data = Data.empty();
+    struct db *db = DataBase.empty();
+    DataBase.load(db, DB_FILE);
+
+    List.showAll(db->list);
+
+    List.saveToFile(db->list, "./res/passengersOut.txt", Data.toCSON);
+}
+
 void db_runAll(){
     Test.display("DataBase Test", BLUE_TEXT);
     db_login_test();
     db_load_test();
     db_search_test();
+    db_save_test();
 }
