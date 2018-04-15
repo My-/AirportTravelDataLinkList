@@ -13,7 +13,6 @@ void main(){
 	if (filep == NULL){
 		printf("The file could not be opened\n");
 	}
-
 	else{
 		fprintf(filep,"%d\n", a);
 		fprintf(filep,"%d\n", c);
@@ -29,7 +28,6 @@ void main(){
 	if (filep == NULL){
 		printf("The file could not be opened\n");
 	}
-
 	else{
 		fprintf(filep, "%d\n", a);
 		fprintf(filep, "%d\n", c);
@@ -41,11 +39,10 @@ void main(){
 	if (filep == NULL){
 		printf("The file cannot be opened\n");
 	}
-
 	else{
 		while (!feof(filep)){
 			num_char = fscanf(filep, "%d", &input);
-            
+
 			if (num_char > 0){
 				printf("Input: %d\n", input);
 			}
