@@ -5,6 +5,7 @@
 #include "../src/menu/menu.h"
 
 void menu_report_test();
+void menu_statistic_test();
 
 
 void menu_runAll();

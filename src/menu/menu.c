@@ -366,10 +366,61 @@ int choiceTwo(){
     return subchoice;
 }
 
+char * stats(struct list* list){
+    int stats = 9;
+    float * statArr = (float*)malloc(stats * sizeof(float));
+    char *R = (char *)malloc(200 * sizeof(char));
+    // initialize to 0 (zero)
+    for(int i  = 0; i < stats; i++){
+        statArr[i] = 0;
+    }
+    // papulate "statArr"
+    struct data *currData;
+    for(currData = List.getFirst(list); currData != NULL; currData = List.getNext(list)){
+        Countries country = currData->country;
+        StayDuration stay = currData->stayDuration;
+
+        switch(country){
+            case UK:        statArr[country -1]++;  break;
+            case EUROPE:    statArr[country -1]++;  break;
+            case ASIA:      statArr[country -1]++;  break;
+            case AMERICAS:  statArr[country -1]++;  break;
+            case AUSTRALIA: statArr[country -1]++;  break;
+        }
+
+        switch(stay){
+            case ONE_DAY:       statArr[stay +4]++; break;
+            case LESS_3_DAYS:   statArr[stay +4]++; break;
+            case LESS_7_DAYS:   statArr[stay +4]++; break;
+            case MORE_7_DAYS:   statArr[stay +4]++; break;
+        }
+    }
+    // convert to % (percentage)
+    float percent;
+    char s[10];
+    strcpy(R, "");
+    for(int i = 0; i < stats; i++){
+        percent = statArr[i] / List.size(list) *100.0f;
+        sprintf(s, "%7.2f", percent);
+        strcat(R, s);
+    }
+
+
+    return R;
+}
+
+// void showStats(float* arr){
+//     for(int i = 0; i < 9; i++){
+//         printf("%10.2f", arr[i]);
+//     }
+//     puts("");
+// }
+
 void menu_statistics(struct db* db){
-    float matches = 0.0f, size = List.size(db->list);
-    struct list *tmpListOne, *tmpListTwo = List.empty();
-    struct data *tmpData = Data.empty();
+    // float matches = 0.0f, size = List.size(db->list);
+    struct list *tmpListOne;
+     // *tmpListTwo = List.empty();
+    // struct data *tmpData = Data.empty();
 
     puts("=======================================");
     puts("=     Statistics                      =");
@@ -377,39 +428,42 @@ void menu_statistics(struct db* db){
 
     tmpListOne = choiceOne(db);
 
-    int subchoice = choiceTwo();
-    Countries country = subchoice;
-    StayDuration stay = subchoice -5;
+    // showStats( stats(tmpListOne) );
+    puts(stats(tmpListOne));
 
-    switch( subchoice ){
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-            tmpData->country = country;
-            tmpListTwo = List.search(tmpListOne, tmpData, Data.equals, Data.compareCountry);
-            if( !List.isEmpty(tmpListTwo) ){ matches = List.size(tmpListTwo) * 100 / size; }
-            printf("%.1f percent of passengers travel from %s.\n", matches, country_toStr[country]);
-            break;
-        case 6:
-        case 7:
-        case 8:
-        case 9:
-            tmpData->stayDuration = stay;
-            tmpListTwo = List.search(tmpListOne, tmpData, Data.equals, Data.compareStayDuration);
-            if( !List.isEmpty(tmpListTwo) ){ matches = List.size(tmpListTwo) * 100 / size; }
-            printf("%.1f percent of passengers stayed %s.\n", matches, stayDuration_toStr[stay]);
-            break;
-        default:
-            puts("Wrong choice! Try again.");
-    }
+    // int subchoice = choiceTwo();
+    // Countries country = subchoice;
+    // StayDuration stay = subchoice -5;
+    //
+    // switch( subchoice ){
+    //     case 1:
+    //     case 2:
+    //     case 3:
+    //     case 4:
+    //     case 5:
+    //         tmpData->country = country;
+    //         tmpListTwo = List.search(tmpListOne, tmpData, Data.equals, Data.compareCountry);
+    //         if( !List.isEmpty(tmpListTwo) ){ matches = List.size(tmpListTwo) * 100 / size; }
+    //         printf("%.1f percent of passengers travel from %s.\n", matches, country_toStr[country]);
+    //         break;
+    //     case 6:
+    //     case 7:
+    //     case 8:
+    //     case 9:
+    //         tmpData->stayDuration = stay;
+    //         tmpListTwo = List.search(tmpListOne, tmpData, Data.equals, Data.compareStayDuration);
+    //         if( !List.isEmpty(tmpListTwo) ){ matches = List.size(tmpListTwo) * 100 / size; }
+    //         printf("%.1f percent of passengers stayed %s.\n", matches, stayDuration_toStr[stay]);
+    //         break;
+    //     default:
+    //         puts("Wrong choice! Try again.");
+    // }
 
     // List.showAll(tmpListTwo);
 
     free(tmpListOne);
-    free(tmpListTwo);
-    free(tmpData);
+    // free(tmpListTwo);
+    // free(tmpData);
 }
 
 void menu_report(struct db* db){
@@ -450,7 +504,7 @@ void menu_report(struct db* db){
 
     // List.showAll(tmpListTwo);
 
-    // create fake data
+    // create empty data
     if( List.isEmpty(tmpListTwo) ){
          tmpData->id = 0;
          tmpData->name = "";
