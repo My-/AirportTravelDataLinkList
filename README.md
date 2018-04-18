@@ -24,3 +24,5 @@ C project
 - `list` - List "class".
 - `db` - DataBase "class".
 - `filter` - Unused code. Replaced with Data comparator. Left for references.
+
+##### Notes:

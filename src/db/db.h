@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>    // boolean
+#include <inttypes.h>   // http://en.cppreference.com/w/c/string/byte/strtoimax
 
 #define ADMIN_DATA_FILE "./res/admins.data"
 #define DB_FILE "./res/passengers.txt"

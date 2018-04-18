@@ -109,19 +109,25 @@ bool db_load( struct db *this, char *fileName ){
         int numChar;
         int len, id, yearBorn, country, travelClass, travelFrequency, stayDuration;
         char str[30];
+        // struct data* data = Data.empty();
 
         while( !feof(pFile) ){
             numChar = fscanf(pFile, "%s", input); // read first lins record
 
             if( numChar > 0 ){
                 if( strchr(input, '#') ){       // skip comments (comment starts with '#')
-                     fgets (input, 600, pFile); 
+                     fgets (input, 600, pFile);
                 }
 				else{
                     // printf("Input: %s\n", input);
                     // https://www.tutorialspoint.com/c_standard_library/c_function_memcpy.htm
-                    struct data* data = Data.empty();
-                    data->id = (int)strtol(input, NULL, 10);
+                    struct data* data = Data.empty();    // data to be placed inside node in a list
+
+                    // data->id = (int)strtol(input, NULL, 10); // convert string to int
+
+                    // http://en.cppreference.com/w/c/string/byte/strtoimax
+                    char* endptr;
+                    data->id = strtoimax(input,&endptr,10);
 
                     fscanf(pFile, "%s", str);
                     data->name = (char*)malloc(sizeof(char)*strlen(str));
@@ -142,7 +148,7 @@ bool db_load( struct db *this, char *fileName ){
                     List.addEnd(this->list, data);
 
                     // printf("size: %d\n", List.size(this->list));
-                    // printf("%d, %s, %s, %d, %s, %d, %d, %d, %d\n", data->id, data->name, data->surname, data->yearBorn, data->email, data->country, data->travelClass, data->travelFrequency, data->stayDuration);dd###xz
+                    // printf("%d, %s, %s, %d, %s, %d, %d, %d, %d\n", data->id, data->name, data->surname, data->yearBorn, data->email, data->country, data->travelClass, data->travelFrequency, data->stayDuration);
 
                 }
 			}

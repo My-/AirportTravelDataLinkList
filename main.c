@@ -1,3 +1,8 @@
+/***************************************************************
+Programs starting point.
+Read readme.md for more info about code.
+check data.h and data.c for comments. rest files dont have redundant comments. 
+/***************************************************************/
 
 #include "./src/admin/admin.h"
 #include "./src/data/data.h"
@@ -11,17 +16,11 @@
 #define STR_LENGTH 30
 
 
-/***************************************************************/
-
-
-
-
-/***************************************************************/
 
 
 int main() {
-    // char * adminName = adminLogin();
-    char * adminName = "adminLogin()";
+    char * adminName = adminLogin();
+    // char * adminName = "adminLogin()";
     puts(adminName);
 
     struct db * db = DataBase.empty();
@@ -31,7 +30,7 @@ int main() {
 
     Menu.main(db);
 
-
+    DataBase.save(db, DB_FILE);
 
 
 

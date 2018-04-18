@@ -23,6 +23,6 @@ void menu_statistic_test(){
 void menu_runAll(){
     Test.display("Menu Test", BLUE_TEXT);
 
-    // menu_report_test();
-    menu_statistic_test();
+    menu_report_test();
+    // menu_statistic_test();
 }

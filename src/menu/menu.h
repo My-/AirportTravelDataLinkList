@@ -9,6 +9,7 @@
 #include <time.h>
 #include "../db/db.h"
 
+void appendToFile(char* filename, char *str);
 
 void menu_main(struct db* db);
 void menu_addRecord(struct db* db);

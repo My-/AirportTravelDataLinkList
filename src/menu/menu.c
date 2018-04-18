@@ -29,6 +29,17 @@ char *currentTime(){
     return c_time_string;
 }
 
+void appendToFile(char* fileName, char *str){
+    FILE* pFile;
+    pFile = fopen(fileName, "a");       // open file
+
+    if( !pFile ){ puts("The file could not be opened"); }
+    else{
+        fprintf( pFile,"%s", str ); // append to file
+        fclose(pFile);      // close file
+    }
+}
+
 
 struct menu Menu = {
     .main = menu_main,
@@ -94,8 +105,8 @@ int getId(struct db *db){       //TODO: show note if id exist
         result = DataBase.search(db, tmpData, Data.equals, Data.compareId);
     }while( result != NULL ); // OK if no mach found, no records exist with this id. So while not empty (NULL) keep asking for id.
     // free memory
-    free(tmpData);
-    free(result);
+    free(tmpData);  tmpData = NULL;
+    free(result);   result = NULL;
 
     return choice;
 }
@@ -231,8 +242,8 @@ void menu_showOne(struct db* db){
     }while( choice );
 
     // free memory
-    free(tmpData);
-    if( result ){ free(result); }
+    free(tmpData);  tmpData = NULL;
+    if( result ){ free(result); result = NULL; }
 }
 
 void changeDetails(struct data**  data){
@@ -292,8 +303,8 @@ void menu_updateRecord(struct db* db){
     }while( choice );
 
     // free memory
-    free(tmpData);
-    if( result ){ free(result); }
+    free(tmpData);  tmpData = NULL;
+    if( result ){ free(result); result = NULL; }
 }
 
 void menu_deleteRecord(struct db* db){
@@ -312,64 +323,11 @@ void menu_deleteRecord(struct db* db){
     }while( id );
 }
 
-struct list * choiceOne(struct db *db){
-    int choice;
-    struct list *list = List.empty();
-    struct data *tmpData = Data.empty();
-    // char classStr[20];
-
-    do{
-        puts("[1] - Travel Class");
-        puts("[2] - Born Before 1980\n");
-        puts("Enter choice:");
-        scanf("%d", &choice);
-
-        switch( choice ){
-            case 1:
-                // strcmp(classStr, "travel ");
-                tmpData->travelClass = getTravelClass();
-                list = DataBase.search(db, tmpData, Data.equals, Data.compareTravelClass);
-                // strcat(classStr, travelClass_toStr[tmpData->travelClass]);
-                // printf("Trvel %s and ", travelClass_toStr[tmpData->travelClass]);
-                break;
-            case 2:
-                tmpData->yearBorn = 1980;
-                list = DataBase.search(db, tmpData, Data.less, Data.compareBornDate);
-                // printf("Born before %d and ", tmpData->yearBorn);
-                break;
-            default:
-                puts("Wrong choice! Try again.");
-        }
-    }while( choice < 1 || 2 < choice );
-
-    free(tmpData);
-    // List.showAll(list);
-    return list;
-}
-
-int choiceTwo(){
-    puts("[1] - % of passengers who travel from the UK");
-    puts("[2] - % of passengers who travel from the Rest of Europe");
-    puts("[3] - % of passengers who travel from the Asia");
-    puts("[4] - % of passengers who travel from the Americas");
-    puts("[5] - % of passengers who travel from the Australasia");
-    puts("[6] - % of passengers who spent on average one day in Ireland");
-    puts("[7] - % of passengers who spent on average less than 3 days in Ireland");
-    puts("[8] - % of passengers who spent on average less than 7 days in Ireland");
-    puts("[9] - % of passengers who spent on average more than 7 days in Ireland");
-    int subchoice;
-    do{
-        puts("Enter choice:");
-        scanf("%d", &subchoice);
-    }while( subchoice < 1 || 9 < subchoice );
-
-    return subchoice;
-}
-
-char * stats(struct list* list){
+char * stats(struct list* list, char * lable){
     int stats = 9;
     float * statArr = (float*)malloc(stats * sizeof(float));
-    char *R = (char *)malloc(200 * sizeof(char));
+    char *R = (char *)malloc(500 * sizeof(char));
+
     // initialize to 0 (zero)
     for(int i  = 0; i < stats; i++){
         statArr[i] = 0;
@@ -395,135 +353,196 @@ char * stats(struct list* list){
             case MORE_7_DAYS:   statArr[stay +4]++; break;
         }
     }
-    // convert to % (percentage)
+    // convert to % (percentage) and create string
     float percent;
     char s[10];
-    strcpy(R, "");
+    strcpy(R, lable);
     for(int i = 0; i < stats; i++){
         percent = statArr[i] / List.size(list) *100.0f;
-        sprintf(s, "%7.2f", percent);
+        sprintf(s, "%-8.2f", percent);
         strcat(R, s);
     }
-
-
+    strcat(R, "\n");
+    // puts(R);
     return R;
 }
 
-// void showStats(float* arr){
-//     for(int i = 0; i < 9; i++){
-//         printf("%10.2f", arr[i]);
-//     }
-//     puts("");
-// }
+int choiceStats(){
+    int choice;
+    do{
+        puts("[1] - Born Before 1980");
+        puts("[2] - Travel Class\n");
+        puts("Enter choice:");
+        scanf("%d", &choice);
+    }while( choice < 1 || 2 < choice );
 
-void menu_statistics(struct db* db){
-    // float matches = 0.0f, size = List.size(db->list);
-    struct list *tmpListOne;
-     // *tmpListTwo = List.empty();
-    // struct data *tmpData = Data.empty();
+    if( choice == 2 ){ choice += getTravelClass(); }
 
-    puts("=======================================");
-    puts("=     Statistics                      =");
-    puts("=======================================");
-
-    tmpListOne = choiceOne(db);
-
-    // showStats( stats(tmpListOne) );
-    puts(stats(tmpListOne));
-
-    // int subchoice = choiceTwo();
-    // Countries country = subchoice;
-    // StayDuration stay = subchoice -5;
-    //
-    // switch( subchoice ){
-    //     case 1:
-    //     case 2:
-    //     case 3:
-    //     case 4:
-    //     case 5:
-    //         tmpData->country = country;
-    //         tmpListTwo = List.search(tmpListOne, tmpData, Data.equals, Data.compareCountry);
-    //         if( !List.isEmpty(tmpListTwo) ){ matches = List.size(tmpListTwo) * 100 / size; }
-    //         printf("%.1f percent of passengers travel from %s.\n", matches, country_toStr[country]);
-    //         break;
-    //     case 6:
-    //     case 7:
-    //     case 8:
-    //     case 9:
-    //         tmpData->stayDuration = stay;
-    //         tmpListTwo = List.search(tmpListOne, tmpData, Data.equals, Data.compareStayDuration);
-    //         if( !List.isEmpty(tmpListTwo) ){ matches = List.size(tmpListTwo) * 100 / size; }
-    //         printf("%.1f percent of passengers stayed %s.\n", matches, stayDuration_toStr[stay]);
-    //         break;
-    //     default:
-    //         puts("Wrong choice! Try again.");
-    // }
-
-    // List.showAll(tmpListTwo);
-
-    free(tmpListOne);
-    // free(tmpListTwo);
-    // free(tmpData);
+    return choice -1;
 }
 
-void menu_report(struct db* db){
-    struct list *tmpListOne, *tmpListTwo = List.empty();
+char * getStats(struct db *db, int choice){
+    struct list *list = List.empty();
     struct data *tmpData = Data.empty();
-
-    puts("=======================================");
-    puts("=     Report                          =");
-    puts("=======================================");
-
-    tmpListOne = choiceOne(db);
-
-    int subchoice = choiceTwo();
-    Countries country = subchoice;
-    StayDuration stay = subchoice -5;
-
-    switch( subchoice ){
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-            tmpData->country = country;
-            tmpListTwo = List.search(tmpListOne, tmpData, Data.equals, Data.compareCountry);
-            if( !List.isEmpty(tmpListTwo) ){ List.showAll(tmpListTwo); }
+    char * R;
+    char lable[30];
+// printf("choise: %d\n", choice);
+// List.showAll(db->list);
+    switch( choice ){
+        case 0:
+            tmpData->yearBorn = 1980;
+            list = DataBase.search(db, tmpData, Data.less, Data.compareBornDate);
+            sprintf(lable, "%-20s| ", "Born before 1980");
+            R = stats(list, lable);
+            // puts(R);
             break;
-        case 6:
-        case 7:
-        case 8:
-        case 9:
-            tmpData->stayDuration = stay;
-            tmpListTwo = List.search(tmpListOne, tmpData, Data.equals, Data.compareStayDuration);
-            if( !List.isEmpty(tmpListTwo) ){ List.showAll(tmpListTwo); }
+        case UK:        // 1
+        case EUROPE:    // 2
+        case ASIA:      // 3
+        case AMERICAS:  // 4
+        case AUSTRALIA: // 5
+            tmpData->travelClass = choice;
+            list = DataBase.search(db, tmpData, Data.equals, Data.compareTravelClass);
+            sprintf(lable, "%-20s| ", travelClass_toStr[tmpData->travelClass]);
+            R = stats(list, lable);
             break;
         default:
             puts("Wrong choice! Try again.");
     }
 
-    // List.showAll(tmpListTwo);
+    free(tmpData);  tmpData = NULL;
+    free(list);     list = NULL;
+    // puts(R);
+    return R;
+}
 
-    // create empty data
-    if( List.isEmpty(tmpListTwo) ){
-         tmpData->id = 0;
-         tmpData->name = "";
-         tmpData->surname = "";
-         tmpData->yearBorn = 0;
-         tmpData->email = "";
-         tmpData->country = 0;
-         tmpData->travelClass = 0;
-         tmpData->travelFrequency = 0;
-         tmpData->stayDuration = 0;
-         List.addFront(tmpListTwo, tmpData);
+// int choiceTwo(){
+//     puts("[1] - % of passengers who travel from the UK");
+//     puts("[2] - % of passengers who travel from the Rest of Europe");
+//     puts("[3] - % of passengers who travel from the Asia");
+//     puts("[4] - % of passengers who travel from the Americas");
+//     puts("[5] - % of passengers who travel from the Australasia");
+//     puts("[6] - % of passengers who spent on average one day in Ireland");
+//     puts("[7] - % of passengers who spent on average less than 3 days in Ireland");
+//     puts("[8] - % of passengers who spent on average less than 7 days in Ireland");
+//     puts("[9] - % of passengers who spent on average more than 7 days in Ireland");
+//     int subchoice;
+//     do{
+//         puts("Enter choice:");
+//         scanf("%d", &subchoice);
+//     }while( subchoice < 1 || 9 < subchoice );
+//
+//     return subchoice;
+// }
+
+
+
+void menu_statistics(struct db* db){
+    char * stats;
+    int choise = choiceStats();
+
+    puts("=======================================");
+    puts("=     Statistics                      =");
+    puts("=======================================\n");
+
+    stats = getStats(db, choise);
+
+    printf("%20s| %-8s%-8s%-8s%-8s%-8s%-8s%-8s%-8s%-8s\n", "",
+            "UK", "Europe", "Asia", "USA", "OZZY",
+            "Stay 1", "Stay 3", "Stay 7", "Stay 7+");
+    puts("----------------------------------------------------------------------------------------------");
+    puts(stats);
+}
+
+void writeStats(struct db* db, char * filename){
+    char str[200];
+    char * stat;
+    char * line = "----------------------------------------------------------------------------------------------\n";
+
+    /// Writing Stats
+    printf("\nWriting Statistics... ");
+    sprintf(str, "\n\n====== %s ======\n", "Statistics");   // banner
+
+    puts("DB before:");
+    DataBase.showAll(db);
+
+    // DataBase.load(db, DB_FILE);
+
+    appendToFile(filename, str);
+
+    puts("DB after:");
+    DataBase.showAll(db);
+
+    // table columns
+    sprintf(str, "%20s| %-8s%-8s%-8s%-8s%-8s%-8s%-8s%-8s%-8s\n", "",
+            "UK", "Europe", "Asia", "USA", "OZZY",
+            "Stay 1", "Stay 3", "Stay 7", "Stay 7+");
+    appendToFile(filename, str);
+    appendToFile(filename, line);
+
+    // write All stats
+    for(int i = 0; i < SIZE_TRAVEL_CLASS; i++){
+        stat = getStats(db, i);
+        // puts(stat);
+        appendToFile(filename, stat);
+        free(stat);
+        stat = NULL;
     }
+    puts("done!");
+}
 
-    char reportFile[50];
-    List.saveToFile(tmpListTwo, currentTime(), Data.toString);
+void menu_report(struct db* db){
+    char * filename = currentTime();
+    char * stat;
+    char str[500];
+    char * line = "----------------------------------------------------------------------------------------------\n";
 
-    free(tmpListOne);
-    free(tmpListTwo);
-    free(tmpData);
+    puts("=======================================");
+    puts("=     Report                          =");
+    puts("=======================================\n");
+
+    // Writing Data
+    printf("Writing data... ");
+
+    if( List.isEmpty(db->list) ){ // if list is empty exit
+        puts("\nEmpty Data Base!");
+        return;
+    }
+    List.saveToFile(db->list, filename, Data.toString);
+    puts("done!");
+
+    writeStats(db, filename);
+
+    // /// Writing Stats
+    // printf("\nWriting Statistics... ");
+    // sprintf(str, "\n\n====== %s ======\n", "Statistics");   // banner
+    //
+    // puts("DB before:");
+    // DataBase.showAll(db);
+    //
+    // // DataBase.load(db, DB_FILE);
+    //
+    // appendToFile(filename, str);
+    //
+    // puts("DB after:");
+    // DataBase.showAll(db);
+    //
+    // // table columns
+    // sprintf(str, "%20s| %-8s%-8s%-8s%-8s%-8s%-8s%-8s%-8s%-8s\n", "",
+    //         "UK", "Europe", "Asia", "USA", "OZZY",
+    //         "Stay 1", "Stay 3", "Stay 7", "Stay 7+");
+    // appendToFile(filename, str);
+    // appendToFile(filename, line);
+    //
+    // // write All stats
+    // for(int i = 0; i < SIZE_TRAVEL_CLASS; i++){
+    //     stat = getStats(db, i);
+    //     // puts(stat);
+    //     appendToFile(filename, stat);
+    //     free(stat);
+    //     stat = NULL;
+    // }
+    // puts("done!");
 }
 
 void menu_listOrdered(struct db* db){

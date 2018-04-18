@@ -238,13 +238,12 @@ void list_showAll( struct list *this ){
     if( List.isEmpty(this) ){ puts("NULL list."); return; } // if list empty here is nothing to show
 
     struct data* data = List.getFirst(this);
-    // printf("%s  %-4s %-10s %-10s %5s %15s %2s %2s %2s %2s\n","   ", "ID", "Name", "Surname", "Born in", "Email", "Country", "Travel Class", "Travel Frequency", "Stay Duration");
-    printf("[%d]: %-4d %-10s %-10s %5d %15s %2d %2d %2d %2d\n",index, data->id, data->name, data->surname, data->yearBorn, data->email, data->country, data->travelClass, data->travelFrequency, data->stayDuration);
+    printf("[%d]: %-4d %-10s %-10s %5d %15s %2d %2d %2d %2d\n", index, data->id, data->name, data->surname, data->yearBorn, data->email, data->country, data->travelClass, data->travelFrequency, data->stayDuration);
 
     while( Node.hasNext(this->CURRENT_NODE) ){
         index++;
         data = List.getNext(this);
-        printf("[%d]: %-4d %-10s %-10s %5d %15s %2d %2d %2d %2d\n",index, data->id, data->name, data->surname, data->yearBorn, data->email, data->country, data->travelClass, data->travelFrequency, data->stayDuration);
+        printf("[%d]: %-4d %-10s %-10s %5d %15s %2d %2d %2d %2d\n", index, data->id, data->name, data->surname, data->yearBorn, data->email, data->country, data->travelClass, data->travelFrequency, data->stayDuration);
     }
 }
 
@@ -293,10 +292,12 @@ void list_saveToFile( struct list *this, char *fileName, DATA_STRINGIFY ){
             if( List.isEmpty(this) ){ puts("Empty list"); break; }
             fprintf( pFile,"%s", stringify(tmpData) );
             free(tmpData); // stringify creates new maclloc each call.
+            tmpData = NULL;
         }
 
         fclose(pFile);
         free(tmpData);
+        tmpData = NULL;
     }
 }
 

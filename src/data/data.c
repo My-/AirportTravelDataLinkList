@@ -150,7 +150,7 @@ char* data_toData(struct data *this){
     return s;
 }
 
-// This is my first atempt to create JSON like output. it is unused function. here for reference only. 
+// This is my first atempt to create JSON like output. it is unused function. here for reference only.
 // https://www.tutorialspoint.com/cprogramming/c_strings.htm
 // https://stackoverflow.com/a/32819876/5322506
 char* data_toInfo(struct data *this){
@@ -193,7 +193,9 @@ char* data_toInfo(struct data *this){
     // printf("%s %s : %d %d\n", id_str, year_Str, this->id, this->yearBorn);
 
     free(id_str);   // free memory from temporary variable
+    id_str = NULL;
     free(year_Str);   // free memory from temporary variable
+    year_Str = NULL;
     return str;
 }
 
